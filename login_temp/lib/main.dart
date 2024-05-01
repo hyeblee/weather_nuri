@@ -1,11 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:login_temp/api_key.dart';
 import 'chatting.dart';
 import 'sign_up.dart';
 
 const Color myBlue = Color(0xFF4073D7);
 const Color mySky = Color(0xFFABC3FF);
-
+String myKey = APIKeys.myAPIKey;
 void main() {
   runApp(MyApp());
 }
