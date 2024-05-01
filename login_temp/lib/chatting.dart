@@ -5,7 +5,7 @@ import 'dart:convert';
 import 'dart:async';
 import 'main.dart';
 import 'api_key.dart';
-
+String myKey = APIKeys.myAPIKey;
 //채팅 화면
 
 Future<String> fetchGptResponse(String text) async {

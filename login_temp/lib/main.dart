@@ -6,7 +6,7 @@ import 'sign_up.dart';
 
 const Color myBlue = Color(0xFF4073D7);
 const Color mySky = Color(0xFFABC3FF);
-String myKey = APIKeys.myAPIKey;
+
 void main() {
   runApp(MyApp());
 }
