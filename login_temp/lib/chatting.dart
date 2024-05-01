@@ -13,7 +13,8 @@ Future<String> fetchGptResponse(String text) async {
     Uri.parse('https://api.openai.com/v1/chat/completions'),
     headers: { // 헤더에는 컨텐츠 타입을 지정한다.
       'Content-Type': 'application/json',
-      'Authorization': 'Bearer ${myKey}', // 실제 API 키로 대체
+      // 'Authorization': 'Bearer ${myKey}', // 실제 API 키로 대체
+      'Authorization' : 'Bearer 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'
     },
     body: jsonEncode({ // 바디에는 서버로 보낼 데이터를 지정한다. JSON 문자열이 일반적이다.
       "model": "gpt-3.5-turbo",
