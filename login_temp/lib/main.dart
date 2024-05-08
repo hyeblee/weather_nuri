@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:login_temp/api_key.dart';
 import 'chatting.dart';
 import 'sign_up.dart';
+import 'login_service.dart';
 
 const Color myBlue = Color(0xFF4073D7);
 const Color mySky = Color(0xFFABC3FF);
@@ -34,6 +35,7 @@ class MyLoginPage extends StatefulWidget {
 class _MyLoginPageState extends State<MyLoginPage> {
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  Service service = Service();
 
   void _login() {
     if(_usernameController.text == 'aaaa' && _passwordController.text == '1111') {

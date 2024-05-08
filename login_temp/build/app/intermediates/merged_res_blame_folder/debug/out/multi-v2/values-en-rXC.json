@@ -1,10 +1,10 @@
 {
     "logs": [
         {
-            "outputFile": "com.example.login_temp.app-mergeDebugResources-9:/values-en-rXC/values-en-rXC.xml",
+            "outputFile": "com.example.login_temp.app-mergeDebugResources-12:/values-en-rXC/values-en-rXC.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\qls09\\.gradle\\caches\\transforms-3\\2579a7de00054bf46a8dbc332552f622\\transformed\\core-1.6.0\\res\\values-en-rXC\\values-en-rXC.xml",
+                    "source": "C:\\Users\\qls09\\.gradle\\caches\\transforms-3\\75f115a0f1013408c24b813aa08b99f3\\transformed\\core-1.9.0\\res\\values-en-rXC\\values-en-rXC.xml",
                     "from": {
                         "startLines": "2",
                         "startColumns": "4",

@@ -2,8 +2,28 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'chatting.dart';
 import 'main.dart';
+import 'package:geolocator/geolocator.dart';
+
+
+
+// 위치 정보 가져오는 함수
+void getLocation(User user) async {
+  try {
+    LocationPermission permission = await Geolocator.requestPermission();
+    Position position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high);
+
+    String _latitude = position.latitude.toString();
+    String _longitude = position.longitude.toString();
+    print('Latitude: ${_latitude}, Longitude: ${_longitude}');
+  } catch (e) {
+    print('Error: $e');
+  }
+
+
+}
+
 
 enum Gender {
   // 성별 자료형
@@ -81,6 +101,8 @@ String setUser(User user) {
   if (user.gender == Gender.none) return 'gender';
 
   if(user.agree == false) return 'location';
+  getLocation(user);
+
   return 'success';
 }
 
@@ -107,7 +129,7 @@ class _SignUpScreenState extends State {
       return;
     }
     else if (result == 'username') {
-     showErrorDialog(context, '이름(닉네임)을 입력하세요');
+      showErrorDialog(context, '이름(닉네임)을 입력하세요');
     } else if (result == 'userID') {
       print('enter userID');
       showErrorDialog(context, '아이디를 입력하세요');
