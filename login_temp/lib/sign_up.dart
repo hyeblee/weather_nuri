@@ -2,6 +2,7 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'main.dart';
 import 'package:geolocator/geolocator.dart';
 
@@ -17,6 +18,10 @@ void getLocation(User user) async {
     String _latitude = position.latitude.toString();
     String _longitude = position.longitude.toString();
     print('Latitude: ${_latitude}, Longitude: ${_longitude}');
+
+    user.latitude = position.latitude;
+    user.longitude = position.longitude;
+
   } catch (e) {
     print('Error: $e');
   }
@@ -37,8 +42,11 @@ class User {
   late String name;
   late String userID;
   late String password;
+  late double latitude;
+  late double longitude;
   Gender gender = Gender.none; // late는 나중에 꼭 초기화 해줄거라는 뜻
   bool agree = false;
+
 
   User() {}
 }
@@ -106,21 +114,21 @@ String setUser(User user) {
   return 'success';
 }
 
-User user = User();
+User myUser = User();
 
 class _SignUpScreenState extends State {
   // 성별 버튼 클릭시 호출되는 함수
   void selectGender(Gender gender) {
     setState(() {
-      user.gender = gender;
-      print(user.gender);
+      myUser.gender = gender;
+      print(myUser.gender);
     });
   }
 
   void signUp() {
-    print('gender = ${user.gender}');
-    print('location = ${user.agree}');
-    String result = setUser(user);
+    print('gender = ${myUser.gender}');
+    print('location = ${myUser.agree}');
+    String result = setUser(myUser);
     if (result == 'success') {
       Navigator.pushReplacement(
         context,
@@ -160,6 +168,7 @@ class _SignUpScreenState extends State {
           ),
         ),
       ),
+        child: SingleChildScrollView(
       child: Column(
         children: [
           Padding(
@@ -191,7 +200,7 @@ class _SignUpScreenState extends State {
                 Row(
                   children: [
                     CupertinoButton(
-                        color: user.gender == Gender.female
+                        color: myUser.gender == Gender.female
                             ? myBlue
                             : myBlue.withOpacity(0.5),
                         child: Container(
@@ -209,7 +218,7 @@ class _SignUpScreenState extends State {
                           selectGender(Gender.female);
                         }),
                     CupertinoButton(
-                        color: user.gender == Gender.male
+                        color: myUser.gender == Gender.male
                             ? myBlue
                             : myBlue.withOpacity(0.5),
                         child: Container(
@@ -243,10 +252,10 @@ class _SignUpScreenState extends State {
                       width: 110, // 체크박스의 가로 크기 조정
                       height: 50,
                       child: CupertinoCheckbox(
-                        value: user.agree,
+                        value: myUser.agree,
                         onChanged: (value) {
                           setState(() {
-                            user.agree = value!;
+                            myUser.agree = value!;
                           });
                         },
                       ),
@@ -276,6 +285,7 @@ class _SignUpScreenState extends State {
           ),
         ],
       ),
+    )
     );
   }
 }

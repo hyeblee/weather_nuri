@@ -1,9 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:login_temp/api_key.dart';
+import 'package:login_temp/weather.dart';
 import 'chatting.dart';
 import 'sign_up.dart';
 import 'login_service.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+
+
 
 const Color myBlue = Color(0xFF4073D7);
 const Color mySky = Color(0xFFABC3FF);
@@ -19,7 +24,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return CupertinoApp(
       title: 'Flutter Demo',
+      // home: MyWeatherApp()
       home: MyLoginPage(),
+      // home: ChatScreen(),
       // home: SignUpScreen(), // Temporary skipping login functionality.
     );
   }
@@ -38,13 +45,14 @@ class _MyLoginPageState extends State<MyLoginPage> {
   Service service = Service();
 
   void _login() {
-    if(_usernameController.text == 'aaaa' && _passwordController.text == '1111') {
+    if(_usernameController.text == 'bittok' && _passwordController.text == '0000') {
       print('Attempting to log in with username ${_usernameController.text} and password ${_passwordController.text}');
       print('Login success!');
 
+
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => ChatScreen()),
+        MaterialPageRoute(builder: (context) => MyWeatherApp()),
       );
     }
   }
@@ -91,10 +99,10 @@ class _MyLoginPageState extends State<MyLoginPage> {
     );
   }
 
-
   @override
   Widget build(BuildContext context) {
     return CupertinoPageScaffold(
+        child: SingleChildScrollView(
       child: Center(
         child: Padding(
           padding: const EdgeInsets.only(top: 90),
@@ -120,6 +128,7 @@ class _MyLoginPageState extends State<MyLoginPage> {
           ),
         ),
       ),
+    )
     );
   }
 
