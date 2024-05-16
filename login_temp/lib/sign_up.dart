@@ -60,6 +60,7 @@ Widget buildTextField(String placeholder, TextEditingController controller) {
       border: Border.all(color: myBlue),
       borderRadius: BorderRadius.circular(10),
     ),
+    style: TextStyle(color: Colors.black),
     controller: controller,
   );
 }
@@ -86,9 +87,9 @@ void showErrorDialog(BuildContext context, String errorMessage) {
 }
 
 
-final TextEditingController _nameController = TextEditingController();
-final TextEditingController _userIDController = TextEditingController();
-final TextEditingController _passwordController = TextEditingController();
+late TextEditingController _nameController = TextEditingController();
+late TextEditingController _userIDController = TextEditingController();
+late TextEditingController _passwordController = TextEditingController();
 
 class SignUpScreen extends StatefulWidget {
   @override
@@ -154,7 +155,18 @@ class _SignUpScreenState extends State {
   }
 
   @override
+
+  void initState() {
+    super.initState();
+    _nameController = TextEditingController();
+    _userIDController = TextEditingController();
+    _passwordController = TextEditingController();
+  }
+
   Widget build(BuildContext context) {
+    theme: CupertinoThemeData(
+        textTheme: CupertinoTextThemeData(textStyle: TextStyle(fontFamily: 'MyKoreanFont', color: Colors.black))
+    );
     return CupertinoPageScaffold(
       navigationBar: CupertinoNavigationBar(
         backgroundColor: Colors.transparent,

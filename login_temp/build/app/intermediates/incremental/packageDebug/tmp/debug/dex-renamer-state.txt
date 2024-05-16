@@ -1,4 +1,4 @@
-#Tue May 14 21:38:49 KST 2024
+#Thu May 16 19:52:07 KST 2024
 base.0=C\:\\Users\\qls09\\StudioProjects\\05_07\\login_temp\\build\\app\\intermediates\\dex\\debug\\mergeDexDebug\\classes.dex
 path.0=classes.dex
 renamed.0=classes.dex

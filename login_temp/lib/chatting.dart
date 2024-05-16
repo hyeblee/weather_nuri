@@ -1,27 +1,28 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:login_temp/weather.dart';
 import 'dart:convert';
 import 'dart:async';
 import 'main.dart';
 import 'api_key.dart';
+
 String myKey = APIKeys.myAPIKey;
 //채팅 화면
 
 Future<String> fetchGptResponse(String text) async {
   final response = await http.post(
     Uri.parse('https://api.openai.com/v1/chat/completions'),
-    headers: { // 헤더에는 컨텐츠 타입을 지정한다.
+    headers: {
+      // 헤더에는 컨텐츠 타입을 지정한다.
       'Content-Type': 'application/json',
       'Authorization': 'Bearer $myKey', // 실제 API 키로 대체
     },
-    body: jsonEncode({ // 바디에는 서버로 보낼 데이터를 지정한다. JSON 문자열이 일반적이다.
+    body: jsonEncode({
+      // 바디에는 서버로 보낼 데이터를 지정한다. JSON 문자열이 일반적이다.
       "model": "gpt-3.5-turbo",
       "messages": [
-        {
-          "role": "user",
-          "content": text
-        }
+        {"role": "user", "content": text}
       ]
     }),
   );
@@ -38,10 +39,6 @@ Future<String> fetchGptResponse(String text) async {
   }
 }
 
-
-
-
-
 void main() {
   runApp(MyApp());
 }
@@ -51,6 +48,16 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return CupertinoApp(
       debugShowCheckedModeBanner: false,
+      theme: const CupertinoThemeData(
+        textTheme: CupertinoTextThemeData(
+          textStyle: TextStyle(
+            fontFamily: 'MyKoreanFont',
+            color: Colors.red// 전체 테마에 적용할 폰트 패밀리 지정
+            // 다른 텍스트 스타일 속성들을 설정할 수 있습니다.
+          ),
+        ),
+
+      ),
       home: ChatScreen(),
     );
   }
@@ -59,18 +66,12 @@ class MyApp extends StatelessWidget {
 class ChatScreen extends StatefulWidget {
   @override
   _ChatScreenState createState() => _ChatScreenState();
-
-
-
-
 }
 
 class _ChatScreenState extends State<ChatScreen> {
   final TextEditingController _textController = TextEditingController();
   final List<ChatMessage> _messages = [];
   bool _isLoading = false; // 로딩 상태 관리 변수
-
-  
 
   void _handleSubmitted(String text) async {
     _textController.clear();
@@ -122,6 +123,19 @@ class _ChatScreenState extends State<ChatScreen> {
   @override
   Widget build(BuildContext context) {
     return CupertinoPageScaffold(
+      navigationBar: CupertinoNavigationBar(
+        backgroundColor: Colors.transparent,
+        leading: GestureDetector(
+          onTap: () {
+            Navigator.of(context).pushReplacement(
+                MaterialPageRoute(builder: (context) => MyWeatherApp()));
+          },
+          child: Icon(
+            CupertinoIcons.back,
+            color: myBlue,
+          ),
+        ),
+      ),
       child: SafeArea(
         child: Column(
           children: <Widget>[
@@ -149,7 +163,8 @@ class _ChatScreenState extends State<ChatScreen> {
                   children: <Widget>[
                     Expanded(
                       child: CupertinoTextField(
-                        padding: EdgeInsets.symmetric(vertical: 2, horizontal: 10),
+                        padding:
+                            EdgeInsets.symmetric(vertical: 2, horizontal: 10),
                         controller: _textController,
                         placeholder: '질문을 입력하세요',
                         onSubmitted: _handleSubmitted,
@@ -157,13 +172,19 @@ class _ChatScreenState extends State<ChatScreen> {
                         cursorColor: myBlue,
                         maxLines: 5,
                         minLines: 1,
-                        decoration: BoxDecoration( // 이 부분을 수정하여 테두리를 제거합니다.
-                          border: Border.all(style: BorderStyle.none), // 테두리 스타일을 none으로 설정
+                        style: TextStyle(fontFamily: 'MyKoreanFont', color: Colors.black),
+
+                        decoration: BoxDecoration(
+                          // 이 부분을 수정하여 테두리를 제거합니다.
+                          border: Border.all(
+                              style: BorderStyle.none), // 테두리 스타일을 none으로 설정
                         ),
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.only(right: 2.5,),
+                      padding: const EdgeInsets.only(
+                        right: 2.5,
+                      ),
                       child: SizedBox(
                         width: 30,
                         height: 30,
@@ -206,24 +227,34 @@ class ChatMessage extends StatelessWidget {
       : super(key: key);
 
   String _getTime() {
-    String time = "${DateTime.now().hour.toString().padLeft(2, '0')}:${DateTime.now().minute.toString().padLeft(2, '0')}";
+    String time =
+        "${DateTime.now().hour.toString().padLeft(2, '0')}:${DateTime.now().minute.toString().padLeft(2, '0')}";
     return time;
   }
 
   @override
   Widget build(BuildContext context) {
+    TextStyle textStyle = TextStyle(
+      fontFamily: 'MyKoreanFont',
+      color: isSentByMe ? Colors.white : Colors.black,
+      fontSize: 16.0,
+    );
+
     return Column(
-      crossAxisAlignment: isSentByMe ? CrossAxisAlignment.end : CrossAxisAlignment.start,
+      crossAxisAlignment:
+      isSentByMe ? CrossAxisAlignment.end : CrossAxisAlignment.start,
       children: [
         Row(
-          mainAxisAlignment: isSentByMe ? MainAxisAlignment.end : MainAxisAlignment.start,
+          mainAxisAlignment:
+          isSentByMe ? MainAxisAlignment.end : MainAxisAlignment.start,
           children: [
             if (!isSentByMe)
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 8.0),
                 child: CircleAvatar(
                   backgroundColor: Colors.white,
-                  backgroundImage: AssetImage("assets/images/bittok_icon.png"), // 상대방 프로필 이미지
+                  backgroundImage: AssetImage(
+                      "assets/images/bittok_icon.png"), // 상대방 프로필 이미지
                 ),
               ),
             Container(
@@ -241,49 +272,45 @@ class ChatMessage extends StatelessWidget {
               padding: EdgeInsets.all(12.0),
               child: Text(
                 text,
-                style: TextStyle(
-                  color: isSentByMe ? Colors.white : Colors.black,
-                  fontSize: 16.0,
-                ),
+                style: textStyle,
               ),
             ),
             if (isSentByMe)
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 8.0),
                 child: CircleAvatar(
-                  backgroundImage: AssetImage('assets/images/user_profile.png'), // 사용자 프로필 이미지
+                  backgroundImage: AssetImage(
+                      'assets/images/user_profile.png'), // 사용자 프로필 이미지
                 ),
               ),
           ],
         ),
         Padding(
-          padding: EdgeInsets.only(
-            top: 4.0,
-            right: isSentByMe ? 40 : 0,
-            left: isSentByMe ? 0 : 40,
-          ),
-          child: Align(
-            alignment: isSentByMe ? Alignment.topRight : Alignment.topLeft,
-            child: Padding(
-              padding: EdgeInsets.only(
-                bottom: 5,// 여기를 조절하여 시간 텍스트와 말풍선의 간격을 줄입니다.
-                right: isSentByMe ? 10 : 0,
-                left: isSentByMe ? 0 : 10,
-              ),
-              child: Text(
-                _getTime(),
-                style: TextStyle(
-                  color: Colors.grey,
-                  fontSize: 12.0,
+            padding: EdgeInsets.only(
+              top: 4.0,
+              right: isSentByMe ? 40 : 0,
+              left: isSentByMe ? 0 : 40,
+            ),
+            child: Align(
+              alignment: isSentByMe ? Alignment.topRight : Alignment.topLeft,
+              child: Padding(
+                padding: EdgeInsets.only(
+                  bottom: 5, // 여기를 조절하여 시간 텍스트와 말풍선의 간격을 줄입니다.
+                  right: isSentByMe ? 10 : 0,
+                  left: isSentByMe ? 0 : 10,
+                ),
+                child: Text(
+                  _getTime(),
+                  style: TextStyle(
+                    color: Colors.grey,
+                    fontSize: 12.0,
+                    fontFamily: 'MyKoreanFont'
+                  ),
                 ),
               ),
-            ),
-          )
-
-        ),
+            )),
       ],
     );
   }
 }
-
 

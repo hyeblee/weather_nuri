@@ -24,8 +24,11 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return CupertinoApp(
       title: 'Flutter Demo',
-      // home: MyWeatherApp()
-      home: MyLoginPage(),
+      theme: CupertinoThemeData(
+        textTheme: CupertinoTextThemeData(textStyle: TextStyle(fontFamily: 'MyKoreanFont'))
+      ),
+      home: MyWeatherApp()
+      // home: MyLoginPage(),
       // home: ChatScreen(),
       // home: SignUpScreen(), // Temporary skipping login functionality.
     );
@@ -68,6 +71,7 @@ class _MyLoginPageState extends State<MyLoginPage> {
     TextEditingController? controller,
     String? placeholder,
     bool obscureText = false,
+
   }) {
     return Container(
       // margin: EdgeInsets.symmetric(horizontal: 40.0),
@@ -84,6 +88,7 @@ class _MyLoginPageState extends State<MyLoginPage> {
         placeholder: placeholder,
         obscureText: obscureText,
         decoration: BoxDecoration(),
+        style: TextStyle(color: Colors.black),
       ),
     );
   }
