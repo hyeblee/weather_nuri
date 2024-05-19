@@ -1,11 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart'; // 플러터 머티리얼 패키지 임포트
+import 'package:flutter/widgets.dart';
 import 'package:login_temp/user_info.dart';
 import 'sign_up.dart'; // 회원가입 화면 클래스 임포트
 import 'chatting.dart'; // 채팅 화면 클래스 임포트
 import 'main.dart'; // 메인 화면 클래스 임포트
 import 'package:http/http.dart' as http; // HTTP 패키지 임포트
 import 'dart:convert'; // JSON 디코딩을 위한 패키지 임포트
+import 'package:login_temp/api_key.dart';
+
+String googleAPIKey = APIKeys.googleAPIKey;
 
 String cityDong = '광진구 군자동';
 
@@ -81,10 +85,65 @@ class HourWeatherWidget extends StatelessWidget {
   }
 }
 
+class WeatherData {
+  final String hour;
+  final String image;
+  final String degree;
+  final String? currentDegree;
+  final String? maxDegree;
+  final String? minDegree;
 
+
+  WeatherData({
+    required this.hour,
+    required this.image,
+    required this.degree,
+    this.currentDegree,
+    this.maxDegree,
+    this.minDegree,
+  });
+
+  @override
+  String toString() {
+    return 'WeatherData(hour: $hour, image: $image, degree: $degree, currentDegree: $currentDegree, maxDegree: $maxDegree, minDegree: $minDegree)';
+  }
+}
+
+
+WeatherData currentWeather = WeatherData(hour: '', image: '', degree: '');
+List<WeatherData> hourWeathers = [];
 
 void main() {
   runApp(MyWeatherApp()); // MyWeatherApp 위젯을 루트로 하는 앱 실행
+}
+
+void DivideWeatherData(List WeatherJsonList) {
+  for (var item in WeatherJsonList) {
+    if (item.containsKey('current_weather')) {
+      var currentWeatherData = item['current_weather'];
+      currentWeather = WeatherData(
+        hour: currentWeatherData['hour'],
+        image: currentWeatherData['image'],
+        currentDegree: currentWeatherData['현재기온'],
+        maxDegree: currentWeatherData['최고기온'],
+        minDegree: currentWeatherData['최저기온'],
+        degree: ' '
+      );
+    } else {
+      hourWeathers.add(
+        WeatherData(
+          hour: item['hour'],
+          image: item['image'],
+          degree: item['degree'],
+        ),
+      );
+    }
+
+    print('Current Weather: $currentWeather');
+    print('Hourly Weathers: $hourWeathers');
+  }
+  print(currentWeather);
+  print(hourWeathers);
 }
 
 class MyWeatherApp extends StatefulWidget {
@@ -103,19 +162,19 @@ class _MyWeatherAppState extends State<MyWeatherApp> {
 
   Future<void> getWeathers() async {
     //날씨 받아오는 함수
-    getAddress();
+    // getAddress();
     final response = await http
         .get(Uri.parse('http://10.0.2.2:3500')); // 서버로부터 데이터를 가져오는 비동기 함수
     if (response.statusCode == 200) {
       // HTTP 상태 코드가 200(성공)인 경우
       List<dynamic> weatherJsonList = jsonDecode(response.body); // JSON 데이터 디코딩
+      DivideWeatherData(weatherJsonList);
       print('Received data: $weatherJsonList'); // 받은 데이터 콘솔에 출력
       setState(() {
         // 상태 갱신
         dataList =
             weatherJsonList.cast<Map<String, dynamic>>(); // JSON 데이터를 리스트에 저장
         print(dataList);
-        getAddress();
       });
     } else {
       // HTTP 상태 코드가 200이 아닌 경우
@@ -131,8 +190,11 @@ class _MyWeatherAppState extends State<MyWeatherApp> {
     // myUser.latitude = 37.550773227800875;
     // myUser.longitude = 127.07554415194865;
 
+    // myUser.latitude =  36.0623237;
+    // myUser.longitude = 126.7067309;
+
     final url =
-        'https://maps.googleapis.com/maps/api/geocode/json?latlng=${myUser.latitude},${myUser.longitude}&language=ko&key=AIzaSyB1TWtIaTe67-W9KQLXM3JYvFpo8FRCkVE';
+        'https://maps.googleapis.com/maps/api/geocode/json?latlng=${myUser.latitude},${myUser.longitude}&language=ko&key=${googleAPIKey}';
     final response = await http.get(Uri.parse(url));
     Map<String, dynamic> data = jsonDecode(response.body);
     List<dynamic> results = data['results'];
@@ -169,6 +231,7 @@ class _MyWeatherAppState extends State<MyWeatherApp> {
                     cityDong,
                     style: TextStyle(color: myBlue),
                   ),
+                  SizedBox( height : 200),
                   SizedBox(
                     height: 300,
                     child: ListView.builder(
@@ -177,9 +240,9 @@ class _MyWeatherAppState extends State<MyWeatherApp> {
                       itemCount: 24,
                       itemBuilder: (BuildContext context, int index) {
                         return HourWeatherWidget(
-                          hour: '15:00',
-                          weatherImage: 'sun',
-                          degree: '21℃',
+                          hour: hourWeathers[index].hour,
+                          weatherImage: hourWeathers[index].image,
+                          degree: hourWeathers[index].degree,
                         );
                       },
                     ),
