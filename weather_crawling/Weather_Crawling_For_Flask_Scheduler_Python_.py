@@ -40,15 +40,15 @@ longitude = None
 # flutter로부터 사용자의 위도/경도 받아옴
 @app.route('/latitude_longitude', methods=['POST'])
 def receive_floats():
-  global latitude, longitude
-  data = request.get_json()
-  latitude = data.get('latitude')
-  longitude = data.get('longitude')
-  if latitude is None or longitude is None:
-      return jsonify({'error': 'Invalid input'}), 400
+    global latitude, longitude
+    data = request.get_json()
+    latitude = data.get('latitude')
+    longitude = data.get('longitude')
+    if latitude is None or longitude is None:
+        return jsonify({'error': 'Invalid input'}), 400
 
-  fetch_weather_data(latitude, longitude)
-  return jsonify({'latitude': latitude, 'longitude': longitude}), 200
+    fetch_weather_data(latitude, longitude)
+    return jsonify({'latitude': latitude, 'longitude': longitude}), 200
 
 # 위경도->주소 변환
 GM_API_KEY = 'AIzaSyDzOorDUFYUi11kpVyUEl56a9s11gxmAIE' #googlemap api
@@ -90,13 +90,13 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
-# 기온 값 소수점 뒤 자리수 조정 + '°' 붙이기
+# 기온 값 소수점 뒤 자리수 조정 + '℃' 붙이기
 def format_temperature(temp_str):
     temp_float = float(temp_str)
     if temp_float.is_integer():
-        return f"{int(temp_float)}°"
+        return f"{int(temp_float)}℃"
     else:
-        return f"{temp_float:.1f}°"
+        return f"{temp_float:.1f}℃"
 
 # 네이버날씨로 최저/최고/현재날씨/현재기온 구하기
 def get_weather_temperatures(region):
@@ -247,7 +247,7 @@ def fetch_weather_data(latitude, longitude):
             image_key = weather_map_day.get(row['날씨'], 'day_cloud')
 
         actual_temp = re.search(r"(\d+)℃", row['기온(체감온도)'])
-        actual_temperature = actual_temp.group(1) + "°" if actual_temp else 'NA'
+        actual_temperature = actual_temp.group(1) + "℃" if actual_temp else 'NA'
 
         data_list.append({
             "hour": formatted_hour,
@@ -317,4 +317,3 @@ if __name__ == '__main__':
 
     # Flask 애플리케이션 실행
     app.run(host='0.0.0.0', port=3500)
-
