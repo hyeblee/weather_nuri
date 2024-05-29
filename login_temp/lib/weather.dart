@@ -12,7 +12,7 @@ import 'package:login_temp/api_key.dart';
 
 String googleAPIKey = APIKeys.googleAPIKey;
 late WeatherData currentWeather;
-String cityDong = '광진구 군자동';
+late String cityDong;
 
 
 Future<void> PostLocation(double latitude, double longitude) async {
@@ -323,29 +323,7 @@ class _MyWeatherAppState extends State<MyWeatherApp> {
     }
   }
 
-  Future<String> getAddress() async {
-    // myUser.latitude = 35.80157686712525; //전주위도
-    // myUser.longitude = 127.13015405967384; //전주경도
-    // myUser.latitude = 37.550773227800875;
-    // myUser.longitude = 127.07554415194865;
 
-    // myUser.latitude =  36.0623237;
-    // myUser.longitude = 126.7067309;
-
-    final url =
-        'https://maps.googleapis.com/maps/api/geocode/json?latlng=${myUser.latitude},${myUser.longitude}&language=ko&key=${googleAPIKey}';
-    final response = await http.get(Uri.parse(url));
-    Map<String, dynamic> data = jsonDecode(response.body);
-    List<dynamic> results = data['results'];
-    String formattedAddresses = results[0]['formatted_address'];
-    List<String> split_addresses = formattedAddresses.split(' ');
-    String city = split_addresses[2];
-    String dong = split_addresses[3];
-
-    cityDong = city + ' ' + dong;
-    print('citydong = $cityDong');
-    return cityDong;
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -421,7 +399,7 @@ class _MyWeatherAppState extends State<MyWeatherApp> {
               context,
               MaterialPageRoute(builder: (context) => ChatScreen()),
             );
-          } else {
+          } else if (currentIndex == 2) {
             Navigator.push(
               context,
               MaterialPageRoute(builder: (context) => UserInfoScreen()),

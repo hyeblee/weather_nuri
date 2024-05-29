@@ -8,6 +8,31 @@ import 'login_service.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
+Future<String> getAddress() async {
+  // myUser.latitude = 35.80157686712525; //전주위도
+  // myUser.longitude = 127.13015405967384; //전주경도
+  // myUser.latitude = 37.550773227800875;
+  // myUser.longitude = 127.07554415194865;
+
+  // myUser.latitude =  36.0623237;
+  // myUser.longitude = 126.7067309;
+
+  final url =
+      'https://maps.googleapis.com/maps/api/geocode/json?latlng=${myUser.latitude},${myUser.longitude}&language=ko&key=${googleAPIKey}';
+  final response = await http.get(Uri.parse(url));
+  Map<String, dynamic> data = jsonDecode(response.body);
+  List<dynamic> results = data['results'];
+  String formattedAddresses = results[0]['formatted_address'];
+  List<String> split_addresses = formattedAddresses.split(' ');
+  String city = split_addresses[2];
+  String dong = split_addresses[3];
+
+
+  cityDong = city + ' ' + dong;
+  print('citydong = $cityDong');
+  return cityDong;
+}
+
 Future<void> postLocation(double latitude, double longitude) async {
   print('start');
 
@@ -67,7 +92,7 @@ class _MyLoginPageState extends State<MyLoginPage> {
   Service service = Service();
 
   void _login() async {
-    print("start");
+    print("login start");
 
 
     //우선 임시로 추가해놓은 부분 삭제할 것
@@ -77,6 +102,7 @@ class _MyLoginPageState extends State<MyLoginPage> {
 
 
     await postLocation(myUser.latitude, myUser.longitude);
+    await getAddress();
     print("ee");
     if(_usernameController.text == 'bittok' && _passwordController.text == '0000') {
       print('Attempting to log in with username ${_usernameController.text} and password ${_passwordController.text}');
