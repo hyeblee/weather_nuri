@@ -298,7 +298,7 @@ class _MyWeatherAppState extends State<MyWeatherApp> {
   }
 
   Future<void> getWeathers() async {
-    await postLocation(myUser.latitude, myUser.longitude);
+    // await postLocation(myUser.latitude, myUser.longitude);
     //날씨 받아오는 함수
     // getAddress();
     final response = await http

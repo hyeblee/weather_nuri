@@ -66,12 +66,23 @@ class _MyLoginPageState extends State<MyLoginPage> {
   final TextEditingController _passwordController = TextEditingController();
   Service service = Service();
 
-  void _login() {
+  void _login() async {
+    print("start");
+
+
+    //우선 임시로 추가해놓은 부분 삭제할 것
+    myUser.latitude = 35.80157686712525; //전주위도
+    myUser.longitude = 127.13015405967384; //전주경도
+    //우선 임시로 추가해놓은 부분 삭제할 것
+
+
+    await postLocation(myUser.latitude, myUser.longitude);
+    print("ee");
     if(_usernameController.text == 'bittok' && _passwordController.text == '0000') {
       print('Attempting to log in with username ${_usernameController.text} and password ${_passwordController.text}');
       print('Login success!');
-
-
+      // postLocation(myUser.latitude, myUser.longitude);
+      // await postLocation(myUser.latitude, myUser.longitude);
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => MyWeatherApp()),
