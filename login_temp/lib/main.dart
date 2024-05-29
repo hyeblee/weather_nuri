@@ -8,7 +8,26 @@ import 'login_service.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
+Future<void> postLocation(double latitude, double longitude) async {
+  print('start');
 
+  final url = Uri.parse("http://10.0.2.2:3500/latitude_longitude");
+  final response = await http.post(
+    url,
+    headers: {'Content-Type': 'application/json'},
+    body: jsonEncode({'latitude': latitude, 'longitude': longitude}),
+  );
+
+  if (response.statusCode == 200) {
+    final responseData = jsonDecode(response.body);
+    print('Result: ${responseData['latitude']}');
+  } else {
+    print('Error: ${response.statusCode}');
+  }
+
+  print('end');
+
+}
 
 const Color myBlue = Color(0xFF4073D7);
 const Color mySky = Color(0xFFABC3FF);
@@ -27,8 +46,8 @@ class MyApp extends StatelessWidget {
       theme: CupertinoThemeData(
         textTheme: CupertinoTextThemeData(textStyle: TextStyle(fontFamily: 'MyKoreanFont'))
       ),
-      home: MyWeatherApp()
-      // home: MyLoginPage(),
+      // home: MyWeatherApp()
+      home: MyLoginPage(),
       // home: ChatScreen(),
       // home: SignUpScreen(), // Temporary skipping login functionality.
     );

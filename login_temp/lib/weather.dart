@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart'; // 플러터 머티리얼 패키지 임포트
 import 'package:flutter/widgets.dart';
 import 'package:login_temp/user_info.dart';
+import 'package:login_temp/widgets/bottom_navigatorbar.dart';
 import 'sign_up.dart'; // 회원가입 화면 클래스 임포트
 import 'chatting.dart'; // 채팅 화면 클래스 임포트
 import 'main.dart'; // 메인 화면 클래스 임포트
@@ -10,8 +11,34 @@ import 'dart:convert'; // JSON 디코딩을 위한 패키지 임포트
 import 'package:login_temp/api_key.dart';
 
 String googleAPIKey = APIKeys.googleAPIKey;
-
+late WeatherData currentWeather;
 String cityDong = '광진구 군자동';
+
+
+Future<void> PostLocation(double latitude, double longitude) async {
+  print('start');
+
+  final url = Uri.parse("http://10.0.2.2:3500/latitude_longitude");
+  final response = await http.post(
+    url,
+    headers: {'Content-Type': 'application/json'},
+    body: jsonEncode({'latitude': 35.80158130754591, 'longitude': 127.13021491497486}),
+  );
+
+  if (response.statusCode == 200) {
+    final responseData = jsonDecode(response.body);
+    print('Result: ${responseData['latitude']}');
+  } else {
+    print('Error: ${response.statusCode}');
+  }
+
+  print('end');
+
+}
+
+
+
+
 
 class HourWeatherWidget extends StatelessWidget {
   final String hour;
@@ -22,6 +49,7 @@ class HourWeatherWidget extends StatelessWidget {
     required this.hour,
     required this.weatherImage,
     required this.degree,
+
   });
 
   @override
@@ -85,23 +113,106 @@ class HourWeatherWidget extends StatelessWidget {
   }
 }
 
+class CurrentWeatherWidget extends StatelessWidget {
+  late String hour;
+  late String weatherImage;
+  late String degree;
+  late String maxDegree;
+  late String minDegree;
+
+  CurrentWeatherWidget({
+    required this.hour,
+    required this.weatherImage,
+    required this.degree,
+    required this.maxDegree,
+    required this.minDegree,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Container(
+
+          child: Padding(
+            padding: EdgeInsets.only(), // 내부 여백 추가
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SizedBox(height: 5),
+                Image.asset(
+                  'assets/images/${weatherImage}.png',
+                  width: 250,
+                  height: 250,
+                ),
+                SizedBox(height: 20),
+                Text(
+                  currentWeather.currentDegree,
+                  style: TextStyle(
+                    // fontWeight: FontWeight.bold,
+                    fontSize: 40,
+                    color: myBlue,
+                  ),
+                ),
+
+                Row(
+                  children: [
+                    SizedBox(width: 150,),
+                    Text(
+                      // " 13°",
+                      currentWeather.maxDegree,
+                      style: TextStyle(
+                        fontSize: 15,
+                        color: myBlue,
+                      ),
+                    ),
+                    Text(
+                      ' / ',
+                      style: TextStyle(
+                        fontSize: 15,
+                        color: myBlue,
+                      ),
+                    ),
+                    Text(
+                      currentWeather.minDegree,
+                      style: TextStyle(
+                        fontSize: 15,
+                        color: myBlue,
+                      ),
+                    ),
+                  ],
+
+                ),
+              ],
+            ),
+          ),
+        ),
+
+      ],
+    );
+  }
+}
+
 class WeatherData {
   final String hour;
   final String image;
   final String degree;
-  final String? currentDegree;
-  final String? maxDegree;
-  final String? minDegree;
+  final String currentDegree;
+  final String maxDegree;
+  final String minDegree;
 
 
   WeatherData({
     required this.hour,
     required this.image,
     required this.degree,
-    this.currentDegree,
-    this.maxDegree,
-    this.minDegree,
+    required this.currentDegree,
+    required this.maxDegree,
+    required this.minDegree,
   });
+
+
+
 
   @override
   String toString() {
@@ -110,7 +221,7 @@ class WeatherData {
 }
 
 
-WeatherData currentWeather = WeatherData(hour: '', image: '', degree: '');
+// WeatherData currentWeather = WeatherData(hour: '', image: '', degree: '');
 List<WeatherData> hourWeathers = [];
 
 void main() {
@@ -122,28 +233,29 @@ void DivideWeatherData(List WeatherJsonList) {
     if (item.containsKey('current_weather')) {
       var currentWeatherData = item['current_weather'];
       currentWeather = WeatherData(
-        hour: currentWeatherData['hour'],
-        image: currentWeatherData['image'],
-        currentDegree: currentWeatherData['현재기온'],
-        maxDegree: currentWeatherData['최고기온'],
-        minDegree: currentWeatherData['최저기온'],
-        degree: ' '
+          hour: currentWeatherData['hour'],
+          image: currentWeatherData['image'],
+          currentDegree: currentWeatherData['현재기온'],
+          maxDegree: currentWeatherData['최고기온'],
+          minDegree: currentWeatherData['최저기온'],
+          degree: ' '
       );
+      print('current = ${currentWeather.degree}');
     } else {
       hourWeathers.add(
         WeatherData(
           hour: item['hour'],
           image: item['image'],
-          degree: item['degree'],
+          degree: item['degree'], currentDegree: '', maxDegree: '', minDegree: '',
         ),
       );
     }
 
     print('Current Weather: $currentWeather');
-    print('Hourly Weathers: $hourWeathers');
+    // print('Hourly Weathers: $hourWeathers');
   }
-  print(currentWeather);
-  print(hourWeathers);
+  // print(currentWeather);
+  // print(hourWeathers);
 }
 
 class MyWeatherApp extends StatefulWidget {
@@ -157,14 +269,41 @@ class _MyWeatherAppState extends State<MyWeatherApp> {
 
   void initState() {
     // print(getAddress());
+    print("1");
+    // PostLocation(1, 1);
+    print("2");
+    getWeathers();
+    print("3");
     super.initState();
+  }
+  Future<void> UpdateLocation(double latitude, double longitude) async {
+    print('start');
+
+    final url = Uri.parse("http://10.0.2.2:3500/latitude_longitude");
+    final response = await http.post(
+      url,
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode({'latitude': 35.80158130754591, 'longitude': 127.13021491497486}),
+    );
+
+    if (response.statusCode == 200) {
+      final responseData = jsonDecode(response.body);
+      print('Result: ${responseData['latitude']}');
+    } else {
+      print('Error: ${response.statusCode}');
+    }
+
+    print('end');
+
   }
 
   Future<void> getWeathers() async {
+    await postLocation(myUser.latitude, myUser.longitude);
     //날씨 받아오는 함수
     // getAddress();
     final response = await http
         .get(Uri.parse('http://10.0.2.2:3500')); // 서버로부터 데이터를 가져오는 비동기 함수
+    print("sadfjlksdaj");
     if (response.statusCode == 200) {
       // HTTP 상태 코드가 200(성공)인 경우
       List<dynamic> weatherJsonList = jsonDecode(response.body); // JSON 데이터 디코딩
@@ -226,18 +365,36 @@ class _MyWeatherAppState extends State<MyWeatherApp> {
                 // 메인 축(수직축)을 중앙으로 정렬
                 children: <Widget>[
                   // 자식 위젯 목록
-                  SizedBox(height: 10),
+                  SizedBox(height: 20),
                   Text(
                     cityDong,
                     style: TextStyle(color: myBlue),
                   ),
-                  SizedBox( height : 200),
+                  SizedBox( height : 20),
+                  IconButton(
+                    // 눌러서 액션을 수행할 수 있는 버튼
+                    onPressed: getWeathers, // 버튼을 눌렀을 때 getWeathers 함수 호출
+                    icon: Icon(Icons.refresh,color: myBlue,), // 새로고침 아이콘 설정
+                    tooltip: 'Fetch Data', // 버튼에 대한 설명 텍스트 설정 (툴팁)
+                  ),
+
+
+                  Padding(padding: EdgeInsets.all(3),
+                    child: CurrentWeatherWidget(
+                      hour: currentWeather.hour, degree: currentWeather.currentDegree, weatherImage: currentWeather.image,
+                      maxDegree: currentWeather.maxDegree, minDegree: currentWeather.minDegree,
+                    ),
+
+                  ),
+
+                  SizedBox( height : 80),
+
                   SizedBox(
-                    height: 300,
+                    height: 130,
                     child: ListView.builder(
                       scrollDirection: Axis.horizontal, // 가로 스크롤을 위해 추가
                       // itemCount: dataList.length,
-                      itemCount: 24,
+                      itemCount: 23,
                       itemBuilder: (BuildContext context, int index) {
                         return HourWeatherWidget(
                           hour: hourWeathers[index].hour,
@@ -247,46 +404,32 @@ class _MyWeatherAppState extends State<MyWeatherApp> {
                       },
                     ),
                   ),
-                  ElevatedButton(
-                    // 눌러서 액션을 수행할 수 있는 버튼
-                    onPressed: getWeathers, // 버튼을 눌렀을 때 fetchData 함수 호출
-                    // onPressed: () {},
-                    child: Text('Fetch Data'), // 버튼 텍스트 설정
-                  ),
+
                 ],
               ),
             ),
           ),
         ),
-        bottomNavigationBar: BottomNavigationBar(
-          items: <BottomNavigationBarItem>[
-            BottomNavigationBarItem(
-              icon: Icon(Icons.sunny),
-              label: 'Weather',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.chat),
-              label: 'Chat',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.person),
-              label: 'Profile',
-            ),
-          ],
-          onTap: (int index) {
-            if (index == 1) { // Chat 아이콘을 클릭했을 때
-              Navigator.push( // Chat 페이지로 이동
-                context,
-                MaterialPageRoute(builder: (context) => ChatScreen()),
-              );
-            }
-            else if (index == 2) { // Chat 아이콘을 클릭했을 때
-              Navigator.push( // Chat 페이지로 이동
-                context,
-                MaterialPageRoute(builder: (context) => UserInfoScreen()),
-              );
-            }
-          },
+        bottomNavigationBar: MyBottomNavigator(currentIndex: 0,onTap: (currentIndex) {
+          if (currentIndex == 0) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => MyWeatherApp()),
+            );
+          } else if (currentIndex == 1) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => ChatScreen()),
+            );
+          } else {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => UserInfoScreen()),
+            );
+          }
+        }
+
+
         ),
       ),
     );

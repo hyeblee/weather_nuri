@@ -1,19 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:login_temp/main.dart';
 import 'package:login_temp/user_info.dart';
 import 'package:login_temp/chatting.dart';
 import 'package:login_temp/weather.dart';
 
-class BottomNavigator extends StatefulWidget {
+class MyBottomNavigator extends StatefulWidget {
   final int currentIndex;
   final Function(int) onTap;
 
-  BottomNavigator({required this.currentIndex, required this.onTap});
+  MyBottomNavigator({required this.currentIndex, required this.onTap});
 
   @override
-  _BottomNavigatorState createState() => _BottomNavigatorState();
+  _MyBottomNavigatorState createState() => _MyBottomNavigatorState();
 }
 
-class _BottomNavigatorState extends State<BottomNavigator> {
+class _MyBottomNavigatorState extends State<MyBottomNavigator> {
   @override
   Widget build(BuildContext context) {
     return BottomNavigationBar(
@@ -33,7 +34,6 @@ class _BottomNavigatorState extends State<BottomNavigator> {
         ),
       ],
       onTap: (currentIndex) {
-
         if (currentIndex == 0) {
           Navigator.push(
             context,
@@ -42,11 +42,14 @@ class _BottomNavigatorState extends State<BottomNavigator> {
         } else if (currentIndex == 1) {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => ChatScreen()),
+            MaterialPageRoute(builder: (context) => MyLoginPage()),
+            // MaterialPageRoute(builder: (context) => ChatScreen()),
           );
-        }
-        else{
-          MaterialPageRoute(builder: (context) => UserInfoScreen());
+        } else if (currentIndex == 1) {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => UserInfoScreen()),
+          );
         }
       },
     );

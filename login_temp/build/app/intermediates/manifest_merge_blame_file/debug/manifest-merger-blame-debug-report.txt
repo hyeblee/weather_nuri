@@ -13,14 +13,14 @@
 13         to allow setting breakpoints, to provide hot reload, etc.
 14    -->
 15    <uses-permission android:name="android.permission.INTERNET" />
-15-->C:\Users\qls09\StudioProjects\05_07\login_temp\android\app\src\debug\AndroidManifest.xml:6:5-66
-15-->C:\Users\qls09\StudioProjects\05_07\login_temp\android\app\src\debug\AndroidManifest.xml:6:22-64
+15-->C:\Users\qls09\git\capstone3\login_temp\android\app\src\debug\AndroidManifest.xml:6:5-66
+15-->C:\Users\qls09\git\capstone3\login_temp\android\app\src\debug\AndroidManifest.xml:6:22-64
 16    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-16-->C:\Users\qls09\StudioProjects\05_07\login_temp\android\app\src\main\AndroidManifest.xml:2:5-79
-16-->C:\Users\qls09\StudioProjects\05_07\login_temp\android\app\src\main\AndroidManifest.xml:2:22-76
+16-->C:\Users\qls09\git\capstone3\login_temp\android\app\src\main\AndroidManifest.xml:2:5-79
+16-->C:\Users\qls09\git\capstone3\login_temp\android\app\src\main\AndroidManifest.xml:2:22-76
 17    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-17-->C:\Users\qls09\StudioProjects\05_07\login_temp\android\app\src\main\AndroidManifest.xml:3:5-81
-17-->C:\Users\qls09\StudioProjects\05_07\login_temp\android\app\src\main\AndroidManifest.xml:3:22-78
+17-->C:\Users\qls09\git\capstone3\login_temp\android\app\src\main\AndroidManifest.xml:3:5-81
+17-->C:\Users\qls09\git\capstone3\login_temp\android\app\src\main\AndroidManifest.xml:3:22-78
 18    <!--
 19 Required to query activities that can process text, see:
 20         https://developer.android.com/training/package-visibility?hl=en and
@@ -29,16 +29,16 @@
 23         In particular, this is used by the Flutter engine in io.flutter.plugin.text.ProcessTextPlugin.
 24    -->
 25    <queries>
-25-->C:\Users\qls09\StudioProjects\05_07\login_temp\android\app\src\main\AndroidManifest.xml:42:5-47:15
+25-->C:\Users\qls09\git\capstone3\login_temp\android\app\src\main\AndroidManifest.xml:42:5-47:15
 26        <intent>
-26-->C:\Users\qls09\StudioProjects\05_07\login_temp\android\app\src\main\AndroidManifest.xml:43:9-46:18
+26-->C:\Users\qls09\git\capstone3\login_temp\android\app\src\main\AndroidManifest.xml:43:9-46:18
 27            <action android:name="android.intent.action.PROCESS_TEXT" />
-27-->C:\Users\qls09\StudioProjects\05_07\login_temp\android\app\src\main\AndroidManifest.xml:44:13-72
-27-->C:\Users\qls09\StudioProjects\05_07\login_temp\android\app\src\main\AndroidManifest.xml:44:21-70
+27-->C:\Users\qls09\git\capstone3\login_temp\android\app\src\main\AndroidManifest.xml:44:13-72
+27-->C:\Users\qls09\git\capstone3\login_temp\android\app\src\main\AndroidManifest.xml:44:21-70
 28
 29            <data android:mimeType="text/plain" />
-29-->C:\Users\qls09\StudioProjects\05_07\login_temp\android\app\src\main\AndroidManifest.xml:45:13-50
-29-->C:\Users\qls09\StudioProjects\05_07\login_temp\android\app\src\main\AndroidManifest.xml:45:19-48
+29-->C:\Users\qls09\git\capstone3\login_temp\android\app\src\main\AndroidManifest.xml:45:13-50
+29-->C:\Users\qls09\git\capstone3\login_temp\android\app\src\main\AndroidManifest.xml:45:19-48
 30        </intent>
 31        <!-- Needs to be explicitly declared on Android R+ -->
 32        <package android:name="com.google.android.apps.maps" />
@@ -108,15 +108,15 @@
 83            android:value="2" />
 84
 85        <service
-85-->[:geolocator_android] C:\Users\qls09\StudioProjects\05_07\login_temp\build\geolocator_android\intermediates\merged_manifest\debug\AndroidManifest.xml:10:9-14:56
+85-->[:geolocator_android] C:\Users\qls09\git\capstone3\login_temp\build\geolocator_android\intermediates\merged_manifest\debug\AndroidManifest.xml:10:9-14:56
 86            android:name="com.baseflow.geolocator.GeolocatorLocationService"
-86-->[:geolocator_android] C:\Users\qls09\StudioProjects\05_07\login_temp\build\geolocator_android\intermediates\merged_manifest\debug\AndroidManifest.xml:11:13-77
+86-->[:geolocator_android] C:\Users\qls09\git\capstone3\login_temp\build\geolocator_android\intermediates\merged_manifest\debug\AndroidManifest.xml:11:13-77
 87            android:enabled="true"
-87-->[:geolocator_android] C:\Users\qls09\StudioProjects\05_07\login_temp\build\geolocator_android\intermediates\merged_manifest\debug\AndroidManifest.xml:12:13-35
+87-->[:geolocator_android] C:\Users\qls09\git\capstone3\login_temp\build\geolocator_android\intermediates\merged_manifest\debug\AndroidManifest.xml:12:13-35
 88            android:exported="false"
-88-->[:geolocator_android] C:\Users\qls09\StudioProjects\05_07\login_temp\build\geolocator_android\intermediates\merged_manifest\debug\AndroidManifest.xml:13:13-37
+88-->[:geolocator_android] C:\Users\qls09\git\capstone3\login_temp\build\geolocator_android\intermediates\merged_manifest\debug\AndroidManifest.xml:13:13-37
 89            android:foregroundServiceType="location" />
-89-->[:geolocator_android] C:\Users\qls09\StudioProjects\05_07\login_temp\build\geolocator_android\intermediates\merged_manifest\debug\AndroidManifest.xml:14:13-53
+89-->[:geolocator_android] C:\Users\qls09\git\capstone3\login_temp\build\geolocator_android\intermediates\merged_manifest\debug\AndroidManifest.xml:14:13-53
 90
 91        <uses-library
 91-->[androidx.window:window:1.0.0-beta04] C:\Users\qls09\.gradle\caches\transforms-3\032f4dff274e516110d9363a9793a3e3\transformed\jetified-window-1.0.0-beta04\AndroidManifest.xml:25:9-27:40
