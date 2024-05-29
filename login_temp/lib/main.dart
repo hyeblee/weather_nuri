@@ -144,7 +144,7 @@ class _MyLoginPageState extends State<MyLoginPage> {
         placeholder: placeholder,
         obscureText: obscureText,
         decoration: BoxDecoration(),
-        style: TextStyle(color: Colors.black),
+        style: TextStyle(color: Colors.black, fontFamily: "MyKoreanFont"),
       ),
     );
   }
@@ -153,7 +153,7 @@ class _MyLoginPageState extends State<MyLoginPage> {
     return SizedBox(
       width: double.infinity, // 버튼을 화면 가로폭에 맞추기 위해
       child: CupertinoButton(
-        child: Text(text ?? '', style: TextStyle(fontSize: 18)),
+        child: Text(text ?? '', style: TextStyle(fontSize: 18, fontFamily: "MyKoreanFont")),
         onPressed: onPressed,
         color: myBlue,
       ),

@@ -42,10 +42,10 @@ class _MyBottomNavigatorState extends State<MyBottomNavigator> {
         } else if (currentIndex == 1) {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => MyLoginPage()),
-            // MaterialPageRoute(builder: (context) => ChatScreen()),
+            // MaterialPageRoute(builder: (context) => MyLoginPage()),
+            MaterialPageRoute(builder: (context) => ChatScreen()),
           );
-        } else if (currentIndex == 1) {
+        } else if (currentIndex == 2) {
           Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => UserInfoScreen()),
