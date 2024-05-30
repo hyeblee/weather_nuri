@@ -18,6 +18,7 @@ class _MyBottomNavigatorState extends State<MyBottomNavigator> {
   @override
   Widget build(BuildContext context) {
     return BottomNavigationBar(
+      selectedItemColor: myBlue,
       currentIndex: widget.currentIndex,
       items: <BottomNavigationBarItem>[
         BottomNavigationBarItem(

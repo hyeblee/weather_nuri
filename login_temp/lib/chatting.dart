@@ -67,10 +67,9 @@ class ChatScreen extends StatefulWidget {
   @override
   _ChatScreenState createState() => _ChatScreenState();
 }
-
+final List<ChatMessage> messages = [];
 class _ChatScreenState extends State<ChatScreen> {
   final TextEditingController _textController = TextEditingController();
-  final List<ChatMessage> _messages = [];
   bool _isLoading = false; // 로딩 상태 관리 변수
 
   void _handleSubmitted(String text) async {
@@ -88,7 +87,7 @@ class _ChatScreenState extends State<ChatScreen> {
       isSentByMe: false,
     );
     setState(() {
-      _messages.insert(0, typingMessage);
+      messages.insert(0, typingMessage);
     });
 
     try {
@@ -97,13 +96,13 @@ class _ChatScreenState extends State<ChatScreen> {
       // "입력 중..." 메시지를 실제 응답으로 대체
       setState(() {
         _isLoading = false; // 로딩 완료
-        _messages.removeAt(0); // "입력 중..." 메시지 제거
+        messages.removeAt(0); // "입력 중..." 메시지 제거
         _addMessage(text: responseText, isSentByMe: false); // 실제 응답 메시지 추가
       });
     } catch (e) {
       setState(() {
         _isLoading = false; // 에러 발생 시 로딩 완료
-        _messages.removeAt(0); // "입력 중..." 메시지 제거
+        messages.removeAt(0); // "입력 중..." 메시지 제거
         _addMessage(text: "응답을 받아오는데 실패했습니다.", isSentByMe: false); // 에러 메시지 추가
       });
       print(e.toString());
@@ -116,7 +115,7 @@ class _ChatScreenState extends State<ChatScreen> {
       isSentByMe: isSentByMe,
     );
     setState(() {
-      _messages.insert(0, message);
+      messages.insert(0, message);
     });
   }
 
@@ -142,9 +141,9 @@ class _ChatScreenState extends State<ChatScreen> {
             Expanded(
               child: ListView.builder(
                 reverse: true,
-                itemCount: _messages.length,
+                itemCount: messages.length,
                 itemBuilder: (BuildContext context, int index) {
-                  return _messages[index];
+                  return messages[index];
                 },
               ),
             ),

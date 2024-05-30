@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 class Service {
-  Future<http.Response> loginMember(
+  Future<String> loginMember(
       String memberemail, String memberpassword) async {
     var uri = Uri.parse("http://10.0.2.2:8080/member/login");
     Map<String, String> headers = {"Content-Type": "application/json"};
@@ -15,9 +15,10 @@ class Service {
     var body = json.encode(data);
     var response = await http.post(uri, headers: headers, body: body);
 
-    print("${response.body}");
-
-    return response;
+    print("!!${response.body}");
+    String message = response.body.toString();
+    print(message);
+    return message;
   }
 
   Future<http.Response> signUpMember(
@@ -34,7 +35,7 @@ class Service {
     var body = json.encode(data);
     var response = await http.post(uri, headers: headers, body: body);
 
-    print("${response.body}");
+    print("${response}");
 
     return response;
   }

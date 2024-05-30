@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:login_temp/main.dart';
 import 'package:login_temp/weather.dart';
-import 'chatting.dart';
+import 'package:login_temp/chatting.dart';
 import 'widgets/bottom_navigatorbar.dart';
 
 void main() {
@@ -105,6 +105,7 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
                 child: ElevatedButton(
                   onPressed: () {
                     // 로그아웃 동작
+                    messages.clear();
                     Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(builder: (context) => MyLoginPage()), // 로그인 화면으로 이동
@@ -116,41 +117,25 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
             ],
           ),
         ),
-        bottomNavigationBar: BottomNavigationBar(
-          items: <BottomNavigationBarItem>[
-            BottomNavigationBarItem(
-              icon: Icon(Icons.sunny),
-              label: 'Weather',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.chat),
-              label: 'Chat',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.person),
-              label: 'Profile',
-            ),
-          ],
-          onTap: (int index) {
-            if (index == 0) { // Chat 아이콘을 클릭했을 때
-              Navigator.push( // Chat 페이지로 이동
-                context,
-                MaterialPageRoute(builder: (context) => MyWeatherApp()),
-              );
-            }
-            else if (index == 1) { // Chat 아이콘을 클릭했을 때
-              Navigator.push( // Chat 페이지로 이동
-                context,
-                MaterialPageRoute(builder: (context) => ChatScreen()),
-              );
-            }
-            else if (index == 2) { // Chat 아이콘을 클릭했을 때
-              Navigator.push( // Chat 페이지로 이동
-                context,
-                MaterialPageRoute(builder: (context) => UserInfoScreen()),
-              );
-            }
-          },
+        bottomNavigationBar: MyBottomNavigator(currentIndex: 2,onTap: (currentIndex) {
+          if (currentIndex == 0) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => MyWeatherApp()),
+            );
+          } else if (currentIndex == 1) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => ChatScreen()),
+            );
+          } else if (currentIndex == 2) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => UserInfoScreen()),
+            );
+          }
+        }
+
       ),
     ),
     );

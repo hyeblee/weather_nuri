@@ -5,8 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'main.dart';
 import 'package:geolocator/geolocator.dart';
+import 'signUp_service.dart';
 
-
+Service service = Service();
 
 // 위치 정보 가져오는 함수
 void getLocation(User user) async {
@@ -60,7 +61,7 @@ Widget buildTextField(String placeholder, TextEditingController controller) {
       border: Border.all(color: myBlue),
       borderRadius: BorderRadius.circular(10),
     ),
-    style: TextStyle(color: Colors.black),
+    style: TextStyle(color: Colors.black, fontFamily: "MyKoreanFont"),
     controller: controller,
   );
 }
@@ -131,6 +132,7 @@ class _SignUpScreenState extends State {
     print('location = ${myUser.agree}');
     String result = setUser(myUser);
     if (result == 'success') {
+      service.signUpMember(myUser.name, myUser.userID, myUser.password, myUser.gender.toString());
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => MyLoginPage()),
@@ -222,7 +224,7 @@ class _SignUpScreenState extends State {
                           child: Center(
                             child: Text(
                               '여성',
-                              style: TextStyle(color: CupertinoColors.white),
+                              style: TextStyle(color: CupertinoColors.white, fontFamily: "MyKoreanFont"),
                             ),
                           ),
                         ),
@@ -240,7 +242,7 @@ class _SignUpScreenState extends State {
                           child: Center(
                             child: Text(
                               '남성',
-                              style: TextStyle(color: CupertinoColors.white),
+                              style: TextStyle(color: CupertinoColors.white, fontFamily: "MyKoreanFont"),
                             ),
                           ),
                         ),
@@ -257,7 +259,7 @@ class _SignUpScreenState extends State {
                       '위치 정보를 제공하는 것에\n동의하십니까?',
                       style: TextStyle(
                         color: CupertinoColors.systemGrey,
-                        fontSize: 20,
+                        fontSize: 20, fontFamily: "MyKoreanFont"
                       ),
                     ),
                     Container(
@@ -285,7 +287,7 @@ class _SignUpScreenState extends State {
                       child: Center(
                         child: Text(
                           '회원가입 완료하기',
-                          style: TextStyle(color: CupertinoColors.white),
+                          style: TextStyle(color: CupertinoColors.white, fontFamily: "MyKoreanFont"),
                         ),
                       ),
                     ),

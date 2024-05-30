@@ -4,7 +4,7 @@ import 'package:login_temp/api_key.dart';
 import 'package:login_temp/weather.dart';
 import 'chatting.dart';
 import 'sign_up.dart';
-import 'login_service.dart';
+import 'package:login_temp/signUp_service.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
@@ -56,6 +56,8 @@ Future<void> postLocation(double latitude, double longitude) async {
 
 const Color myBlue = Color(0xFF4073D7);
 const Color mySky = Color(0xFFABC3FF);
+Service myService = Service();
+
 
 void main() {
   runApp(MyApp());
@@ -89,11 +91,12 @@ class MyLoginPage extends StatefulWidget {
 class _MyLoginPageState extends State<MyLoginPage> {
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  Service service = Service();
 
   void _login() async {
     print("login start");
-
+    Service myService = Service();
+    String LoginResponse = await myService.loginMember(_usernameController.text.toString(), _passwordController.text.toString());
+    print("${LoginResponse},,");
 
     //우선 임시로 추가해놓은 부분 삭제할 것
     myUser.latitude = 35.80157686712525; //전주위도
@@ -104,7 +107,9 @@ class _MyLoginPageState extends State<MyLoginPage> {
     await postLocation(myUser.latitude, myUser.longitude);
     await getAddress();
     print("ee");
-    if(_usernameController.text == 'bittok' && _passwordController.text == '0000') {
+
+    if(LoginResponse == 'success'){
+    // if(_usernameController.text == 'bittok' && _passwordController.text == '0000') {
       print('Attempting to log in with username ${_usernameController.text} and password ${_passwordController.text}');
       print('Login success!');
       // postLocation(myUser.latitude, myUser.longitude);
