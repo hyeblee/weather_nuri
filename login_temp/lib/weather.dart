@@ -9,10 +9,14 @@ import 'main.dart'; // 메인 화면 클래스 임포트
 import 'package:http/http.dart' as http; // HTTP 패키지 임포트
 import 'dart:convert'; // JSON 디코딩을 위한 패키지 임포트
 import 'package:login_temp/api_key.dart';
+import 'package:login_temp/sign_up.dart';
+import 'package:login_temp/user_info.dart';
 
 String googleAPIKey = APIKeys.googleAPIKey;
 late WeatherData currentWeather;
 late String cityDong;
+
+
 
 
 Future<void> PostLocation(double latitude, double longitude) async {
@@ -22,7 +26,7 @@ Future<void> PostLocation(double latitude, double longitude) async {
   final response = await http.post(
     url,
     headers: {'Content-Type': 'application/json'},
-    body: jsonEncode({'latitude': 35.80158130754591, 'longitude': 127.13021491497486}),
+    body: jsonEncode({'latitude': myUser.latitude, 'longitude': myUser.longitude}),
   );
 
   if (response.statusCode == 200) {
@@ -145,7 +149,7 @@ class CurrentWeatherWidget extends StatelessWidget {
                   width: 250,
                   height: 250,
                 ),
-                SizedBox(height: 20),
+                SizedBox(height: 40),
                 Text(
                   currentWeather.currentDegree,
                   style: TextStyle(
@@ -346,16 +350,23 @@ class _MyWeatherAppState extends State<MyWeatherApp> {
                   SizedBox(height: 20),
                   Text(
                     cityDong,
-                    style: TextStyle(color: myBlue),
+                    style: TextStyle(color: myBlue, fontSize: 20),
                   ),
-                  SizedBox( height : 20),
-                  IconButton(
-                    // 눌러서 액션을 수행할 수 있는 버튼
-                    onPressed: getWeathers, // 버튼을 눌렀을 때 getWeathers 함수 호출
-                    icon: Icon(Icons.refresh,color: myBlue,), // 새로고침 아이콘 설정
-                    tooltip: 'Fetch Data', // 버튼에 대한 설명 텍스트 설정 (툴팁)
+                  // SizedBox( height : 20),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(right: 20),
+                        child: IconButton(
+                          onPressed: getWeathers,
+                          icon: Icon(Icons.refresh, color: myBlue),
+                          tooltip: 'Fetch Data',
+                        ),
+                      ),
+                    ],
                   ),
-
+                  SizedBox(height: 40),
 
                   Padding(padding: EdgeInsets.all(3),
                     child: CurrentWeatherWidget(
@@ -365,14 +376,14 @@ class _MyWeatherAppState extends State<MyWeatherApp> {
 
                   ),
 
-                  SizedBox( height : 80),
+                  SizedBox( height : 60),
 
                   SizedBox(
                     height: 130,
-                    child: ListView.builder(
-                      scrollDirection: Axis.horizontal, // 가로 스크롤을 위해 추가
-                      // itemCount: dataList.length,
-                      itemCount: 23,
+                    child: hourWeathers.isNotEmpty
+                        ? ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: hourWeathers.length,
                       itemBuilder: (BuildContext context, int index) {
                         return HourWeatherWidget(
                           hour: hourWeathers[index].hour,
@@ -380,7 +391,12 @@ class _MyWeatherAppState extends State<MyWeatherApp> {
                           degree: hourWeathers[index].degree,
                         );
                       },
+                    )
+                        : Text(
+                      '날씨 데이터를 불러올 수 없습니다.',
+                      style: TextStyle(color: myBlue, fontSize: 20),
                     ),
+
                   ),
 
                 ],

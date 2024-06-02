@@ -1,12 +1,17 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:login_temp/api_key.dart';
+import 'package:login_temp/sign_up.dart';
+import 'package:login_temp/user_info.dart';
+import 'package:login_temp/user_info_edit.dart';
 import 'package:login_temp/weather.dart';
 import 'chatting.dart';
-import 'sign_up.dart';
+import 'sign_up.dart' as signUp;
 import 'package:login_temp/signUp_service.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+
+signUp.User myUser = signUp.User();
 
 Future<String> getAddress() async {
   // myUser.latitude = 35.80157686712525; //전주위도
@@ -74,9 +79,11 @@ class MyApp extends StatelessWidget {
         textTheme: CupertinoTextThemeData(textStyle: TextStyle(fontFamily: 'MyKoreanFont'))
       ),
       // home: MyWeatherApp()
-      home: MyLoginPage(),
-      // home: ChatScreen(),
-      // home: SignUpScreen(), // Temporary skipping login functionality.
+      // home: MyLoginPage(),
+      home: ChatScreen(),
+      // home: SignUpScreen(),
+      // home: UserInfoEditScreen(),
+      // home: UserInfoScreen(),
     );
   }
 }
@@ -92,6 +99,16 @@ class _MyLoginPageState extends State<MyLoginPage> {
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
+
+  @override
+  void initState() {
+    super.initState();
+    // getLocation(myUser);
+    //주석 해제해야함!!!
+    print('InitState: Login Page initialized');
+  }
+
+
   void _login() async {
     print("login start");
     Service myService = Service();
@@ -99,8 +116,8 @@ class _MyLoginPageState extends State<MyLoginPage> {
     print("${LoginResponse},,");
 
     //우선 임시로 추가해놓은 부분 삭제할 것
-    myUser.latitude = 35.80157686712525; //전주위도
-    myUser.longitude = 127.13015405967384; //전주경도
+    // myUser.latitude = 35.80157686712525; //전주위도
+    // myUser.longitude = 127.13015405967384; //전주경도
     //우선 임시로 추가해놓은 부분 삭제할 것
 
 

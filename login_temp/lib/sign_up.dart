@@ -8,6 +8,7 @@ import 'package:geolocator/geolocator.dart';
 import 'signUp_service.dart';
 
 Service service = Service();
+int radiobutton_hot = 0;
 
 // 위치 정보 가져오는 함수
 void getLocation(User user) async {
@@ -22,14 +23,10 @@ void getLocation(User user) async {
 
     user.latitude = position.latitude;
     user.longitude = position.longitude;
-
   } catch (e) {
     print('Error: $e');
   }
-
-
 }
-
 
 enum Gender {
   // 성별 자료형
@@ -45,9 +42,9 @@ class User {
   late String password;
   late double latitude;
   late double longitude;
+  late int hot_degree;
   Gender gender = Gender.none; // late는 나중에 꼭 초기화 해줄거라는 뜻
   bool agree = false;
-
 
   User() {}
 }
@@ -87,7 +84,6 @@ void showErrorDialog(BuildContext context, String errorMessage) {
   );
 }
 
-
 late TextEditingController _nameController = TextEditingController();
 late TextEditingController _userIDController = TextEditingController();
 late TextEditingController _passwordController = TextEditingController();
@@ -110,13 +106,16 @@ String setUser(User user) {
 
   if (user.gender == Gender.none) return 'gender';
 
-  if(user.agree == false) return 'location';
+  if (user.agree == false) return 'location';
   getLocation(user);
+
+  if (user.hot_degree == false) return 'hot';
+  user.hot_degree = radiobutton_hot;
 
   return 'success';
 }
 
-User myUser = User();
+
 
 class _SignUpScreenState extends State {
   // 성별 버튼 클릭시 호출되는 함수
@@ -132,14 +131,14 @@ class _SignUpScreenState extends State {
     print('location = ${myUser.agree}');
     String result = setUser(myUser);
     if (result == 'success') {
-      service.signUpMember(myUser.name, myUser.userID, myUser.password, myUser.gender.toString());
+      service.signUpMember(myUser.name, myUser.userID, myUser.password,
+          myUser.gender.toString(), myUser.hot_degree.toString());
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => MyLoginPage()),
       );
       return;
-    }
-    else if (result == 'username') {
+    } else if (result == 'username') {
       showErrorDialog(context, '이름(닉네임)을 입력하세요');
     } else if (result == 'userID') {
       print('enter userID');
@@ -153,11 +152,13 @@ class _SignUpScreenState extends State {
     } else if (result == 'location') {
       showErrorDialog(context, '위치정보 제공에 동의해주세요!');
       print('agree location');
+    } else if (result == 'hot') {
+      showErrorDialog(context, '추위를 느끼는 정도를 선택해주세요!');
+      print('hot');
     }
   }
 
   @override
-
   void initState() {
     super.initState();
     _nameController = TextEditingController();
@@ -166,140 +167,205 @@ class _SignUpScreenState extends State {
   }
 
   Widget build(BuildContext context) {
-    theme: CupertinoThemeData(
-        textTheme: CupertinoTextThemeData(textStyle: TextStyle(fontFamily: 'MyKoreanFont', color: Colors.black))
-    );
+    theme:
+    CupertinoThemeData(
+        textTheme: CupertinoTextThemeData(
+            textStyle:
+                TextStyle(fontFamily: 'MyKoreanFont', color: Colors.black)));
     return CupertinoPageScaffold(
-      navigationBar: CupertinoNavigationBar(
-        backgroundColor: Colors.transparent,
-        leading: GestureDetector(
-          onTap: () {
-            Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => MyLoginPage()));
-          },
-          child: Icon(
-            CupertinoIcons.back,
-            color: myBlue,
-          ),
-        ),
-      ),
-        child: SingleChildScrollView(
-      child: Column(
-        children: [
-          Padding(
-            padding: EdgeInsets.all(40),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: <Widget>[
-                SizedBox(
-                  height: 50,
-                ),
-                Image.asset(
-                  'assets/images/bittok_icon.png',
-                  width: 100,
-                  height: 200,
-                ),
-                SizedBox(
-                  height: 50,
-                ),
-                buildTextField('이름(닉네임)', _nameController),
-                SizedBox(
-                  height: 20,
-                ),
-                buildTextField('아이디', _userIDController),
-                SizedBox(
-                  height: 20,
-                ),
-                buildTextField('비밀번호', _passwordController),
-                SizedBox(height: 20),
-                Row(
-                  children: [
-                    CupertinoButton(
-                        color: myUser.gender == Gender.female
-                            ? myBlue
-                            : myBlue.withOpacity(0.5),
-                        child: Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: Center(
-                            child: Text(
-                              '여성',
-                              style: TextStyle(color: CupertinoColors.white, fontFamily: "MyKoreanFont"),
-                            ),
-                          ),
-                        ),
-                        onPressed: () {
-                          selectGender(Gender.female);
-                        }),
-                    CupertinoButton(
-                        color: myUser.gender == Gender.male
-                            ? myBlue
-                            : myBlue.withOpacity(0.5),
-                        child: Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: Center(
-                            child: Text(
-                              '남성',
-                              style: TextStyle(color: CupertinoColors.white, fontFamily: "MyKoreanFont"),
-                            ),
-                          ),
-                        ),
-                        onPressed: () {
-                          selectGender(Gender.male);
-                        }),
-                  ],
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                ),
-                SizedBox(height: 40),
-                Row(
-                  children: [
-                    Text(
-                      '위치 정보를 제공하는 것에\n동의하십니까?',
-                      style: TextStyle(
-                        color: CupertinoColors.systemGrey,
-                        fontSize: 20, fontFamily: "MyKoreanFont"
-                      ),
-                    ),
-                    Container(
-                      width: 110, // 체크박스의 가로 크기 조정
-                      height: 50,
-                      child: CupertinoCheckbox(
-                        value: myUser.agree,
-                        onChanged: (value) {
-                          setState(() {
-                            myUser.agree = value!;
-                          });
-                        },
-                      ),
-                    ),
-                  ],
-                ),
-                SizedBox(height: 40),
-                CupertinoButton(
-                    color: myBlue,
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: myBlue,
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: Center(
-                        child: Text(
-                          '회원가입 완료하기',
-                          style: TextStyle(color: CupertinoColors.white, fontFamily: "MyKoreanFont"),
-                        ),
-                      ),
-                    ),
-                    onPressed: () {
-                      signUp();
-                    }),
-              ],
+        navigationBar: CupertinoNavigationBar(
+          backgroundColor: Colors.transparent,
+          leading: GestureDetector(
+            onTap: () {
+              Navigator.of(context).pushReplacement(
+                  MaterialPageRoute(builder: (context) => MyLoginPage()));
+            },
+            child: Icon(
+              CupertinoIcons.back,
+              color: myBlue,
             ),
           ),
-        ],
-      ),
-    )
-    );
+        ),
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              Padding(
+                padding: EdgeInsets.all(40),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: <Widget>[
+                    SizedBox(
+                      height: 50,
+                    ),
+                    Image.asset(
+                      'assets/images/bittok_icon.png',
+                      width: 100,
+                      height: 200,
+                    ),
+                    SizedBox(
+                      height: 50,
+                    ),
+                    buildTextField('이름(닉네임)', _nameController),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    buildTextField('아이디', _userIDController),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    buildTextField('비밀번호', _passwordController),
+                    SizedBox(height: 20),
+                    Row(
+                      children: [
+                        CupertinoButton(
+                            color: myUser.gender == Gender.female
+                                ? myBlue
+                                : myBlue.withOpacity(0.5),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: Center(
+                                child: Text(
+                                  '여성',
+                                  style: TextStyle(
+                                      color: CupertinoColors.white,
+                                      fontFamily: "MyKoreanFont"),
+                                ),
+                              ),
+                            ),
+                            onPressed: () {
+                              selectGender(Gender.female);
+                            }),
+                        CupertinoButton(
+                            color: myUser.gender == Gender.male
+                                ? myBlue
+                                : myBlue.withOpacity(0.5),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: Center(
+                                child: Text(
+                                  '남성',
+                                  style: TextStyle(
+                                      color: CupertinoColors.white,
+                                      fontFamily: "MyKoreanFont"),
+                                ),
+                              ),
+                            ),
+                            onPressed: () {
+                              selectGender(Gender.male);
+                            }),
+                      ],
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    ),
+                    const SizedBox(height: 20),
+                    const Text(
+                      '추위를 느끼는 정도를 선택해주세요!',
+                      style: TextStyle(
+                          color: CupertinoColors.black,
+                          fontSize: 18,
+                          fontFamily: "MyKoreanFont"),
+                    ),
+                    const SizedBox(height: 20),
+
+                    Row(
+                      children: [
+                        CupertinoRadio<int>(
+                          value: 1, // 이 옵션의 값
+                          groupValue: radiobutton_hot, // 그룹 내 현재 선택된 값
+                          onChanged: (value) {
+                            setState(() {
+                              radiobutton_hot = value!; // 선택된 값 업데이트
+                            });
+                          },
+                          activeColor: myBlue,
+                        ),
+                        Text(' 추위를 많이 타요.', style: TextStyle(color: Colors.black),),
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        CupertinoRadio<int>(
+                          value: 2, // 이 옵션의 값
+                          groupValue: radiobutton_hot, // 그룹 내 현재 선택된 값
+                          onChanged: (value) {
+                            setState(() {
+                              radiobutton_hot = value!; // 선택된 값 업데이트
+                            });
+                          },
+                          activeColor: myBlue,
+                        ),
+                        Text(' 평균이에요.', style: TextStyle(color: Colors.black),),
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        CupertinoRadio<int>(
+                          value: 3, // 이 옵션의 값
+                          groupValue: radiobutton_hot, // 그룹 내 현재 선택된 값
+                          onChanged: (value) {
+                            setState(() {
+                              radiobutton_hot = value!; // 선택된 값 업데이트
+                            });
+                          },
+                          activeColor: myBlue,
+                        ),
+                        Text(' 더위를 많이 타요.', style: TextStyle(color: Colors.black),),
+                      ],
+                    ),
+                    const SizedBox(height: 20),
+
+                    Row(
+                      children: [
+                        const Text(
+                          '위치 정보를 제공하는 것에 동의하십니까?',
+                          style: TextStyle(
+                              color: CupertinoColors.systemGrey,
+                              fontSize: 18,
+                              fontFamily: "MyKoreanFont"),
+                        ),
+                        Spacer(),
+                        Container(
+                          width: 50, // 체크박스의 가로 크기 조정
+                          height: 50,
+                          child: CupertinoCheckbox(
+                            value: myUser.agree,
+                            onChanged: (value) {
+                              setState(() {
+                                myUser.agree = value!;
+                              });
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 20),
+                    CupertinoButton(
+                        color: myBlue,
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: myBlue,
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: Center(
+                            child: Text(
+                              '회원가입 완료하기',
+                              style: TextStyle(
+                                  color: CupertinoColors.white,
+                                  fontFamily: "MyKoreanFont"),
+                            ),
+                          ),
+                        ),
+                        onPressed: () {
+                          signUp();
+                        }),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ));
   }
 }

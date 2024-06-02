@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:login_temp/user_info.dart';
 import 'package:login_temp/weather.dart';
 import 'dart:convert';
 import 'dart:async';
@@ -12,28 +13,18 @@ String myKey = APIKeys.myAPIKey;
 
 Future<String> fetchGptResponse(String text) async {
   final response = await http.post(
-    Uri.parse('https://api.openai.com/v1/chat/completions'),
-    headers: {
-      // 헤더에는 컨텐츠 타입을 지정한다.
-      'Content-Type': 'application/json',
-      'Authorization': 'Bearer $myKey', // 실제 API 키로 대체
-    },
+    Uri.parse('http://10.0.2.2:8080/chat/ask'),
     body: jsonEncode({
-      // 바디에는 서버로 보낼 데이터를 지정한다. JSON 문자열이 일반적이다.
-      "model": "gpt-3.5-turbo",
-      "messages": [
-        {"role": "user", "content": text}
-      ]
+      "question": text,
     }),
   );
   print(response.body);
 
   if (response.statusCode == 200) {
     var data = json.decode(response.body);
-    // 수정된 부분: GPT 모델의 응답을 콘솔에 출력
-    print("GPT 응답: ${data['choices'][0]['message']['content']}");
-    // GPT 모델의 응답 텍스트를 반환
-    return data['choices'][0]['message']['content'];
+    print('$data');
+    print(response.body);
+    return '성공하였습니다.';
   } else {
     throw Exception('Failed to load GPT response');
   }
@@ -128,6 +119,7 @@ class _ChatScreenState extends State<ChatScreen> {
           onTap: () {
             Navigator.of(context).pushReplacement(
                 MaterialPageRoute(builder: (context) => MyWeatherApp()));
+            // MaterialPageRoute(builder: (context) => UserInfoScreen()));
           },
           child: Icon(
             CupertinoIcons.back,
