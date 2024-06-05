@@ -108,8 +108,8 @@ String setUser(User user) {
 
   if (user.agree == false) return 'location';
   getLocation(user);
-
-  if (user.hot_degree == false) return 'hot';
+  print("hotdegree = ${user.hot_degree}");
+  if (radiobutton_hot == 0) return 'hot';
   user.hot_degree = radiobutton_hot;
 
   return 'success';
@@ -277,7 +277,9 @@ class _SignUpScreenState extends State {
                           groupValue: radiobutton_hot, // 그룹 내 현재 선택된 값
                           onChanged: (value) {
                             setState(() {
-                              radiobutton_hot = value!; // 선택된 값 업데이트
+                              radiobutton_hot = value!; // 선택된 값
+                              myUser.hot_degree = radiobutton_hot;
+                              // print("update radiobutton $radiobutton_hot");
                             });
                           },
                           activeColor: myBlue,
@@ -293,6 +295,8 @@ class _SignUpScreenState extends State {
                           onChanged: (value) {
                             setState(() {
                               radiobutton_hot = value!; // 선택된 값 업데이트
+                              myUser.hot_degree = radiobutton_hot;
+                              // print("update radiobutton $radiobutton_hot");
                             });
                           },
                           activeColor: myBlue,
@@ -308,6 +312,8 @@ class _SignUpScreenState extends State {
                           onChanged: (value) {
                             setState(() {
                               radiobutton_hot = value!; // 선택된 값 업데이트
+                              myUser.hot_degree = radiobutton_hot;
+                              // print("update radiobutton $radiobutton_hot");
                             });
                           },
                           activeColor: myBlue,

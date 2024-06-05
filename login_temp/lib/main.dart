@@ -12,6 +12,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 signUp.User myUser = signUp.User();
+String UserID = '아이디';
 
 Future<String> getAddress() async {
   // myUser.latitude = 35.80157686712525; //전주위도
@@ -79,8 +80,8 @@ class MyApp extends StatelessWidget {
         textTheme: CupertinoTextThemeData(textStyle: TextStyle(fontFamily: 'MyKoreanFont'))
       ),
       // home: MyWeatherApp()
-      // home: MyLoginPage(),
-      home: ChatScreen(),
+      home: MyLoginPage(),
+      // home: ChatScreen(),
       // home: SignUpScreen(),
       // home: UserInfoEditScreen(),
       // home: UserInfoScreen(),
@@ -103,7 +104,7 @@ class _MyLoginPageState extends State<MyLoginPage> {
   @override
   void initState() {
     super.initState();
-    // getLocation(myUser);
+    getLocation(myUser);
     //주석 해제해야함!!!
     print('InitState: Login Page initialized');
   }
@@ -121,16 +122,18 @@ class _MyLoginPageState extends State<MyLoginPage> {
     //우선 임시로 추가해놓은 부분 삭제할 것
 
 
-    await postLocation(myUser.latitude, myUser.longitude);
-    await getAddress();
+    // await postLocation(myUser.latitude, myUser.longitude);
+    // await getAddress();
     print("ee");
 
     if(LoginResponse == 'success'){
     // if(_usernameController.text == 'bittok' && _passwordController.text == '0000') {
       print('Attempting to log in with username ${_usernameController.text} and password ${_passwordController.text}');
       print('Login success!');
-      // postLocation(myUser.latitude, myUser.longitude);
-      // await postLocation(myUser.latitude, myUser.longitude);
+      UserID = _usernameController.text.toString();
+      print('id = $UserID');
+      await postLocation(myUser.latitude, myUser.longitude);
+      await getAddress();
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => MyWeatherApp()),

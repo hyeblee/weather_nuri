@@ -9,13 +9,19 @@ import 'main.dart';
 import 'api_key.dart';
 
 String myKey = APIKeys.myAPIKey;
-//채팅 화면
+// 채팅 화면
 
 Future<String> fetchGptResponse(String text) async {
+  print('질문은 $text');
   final response = await http.post(
-    Uri.parse('http://10.0.2.2:8080/chat/ask'),
+    Uri.parse('http://34.64.61.102:8080/chat/ask'),
+    headers: {
+      'Content-Type': 'application/json',
+    },
     body: jsonEncode({
+      "memberEmail": UserID,
       "question": text,
+      "hot": '1',
     }),
   );
   print(response.body);
@@ -23,10 +29,12 @@ Future<String> fetchGptResponse(String text) async {
   if (response.statusCode == 200) {
     var data = json.decode(response.body);
     print('$data');
-    print(response.body);
-    return '성공하였습니다.';
+    var answer = data["answer"];
+    print(response);
+    return answer;
   } else {
-    throw Exception('Failed to load GPT response');
+    print(response.body);
+    throw Exception('Failed to load response');
   }
 }
 
@@ -37,17 +45,15 @@ void main() {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return CupertinoApp(
+    return MaterialApp(
       debugShowCheckedModeBanner: false,
-      theme: const CupertinoThemeData(
-        textTheme: CupertinoTextThemeData(
-          textStyle: TextStyle(
+      theme: ThemeData(
+        textTheme: TextTheme(
+          bodyText1: TextStyle(
             fontFamily: 'MyKoreanFont',
-            color: Colors.red// 전체 테마에 적용할 폰트 패밀리 지정
-            // 다른 텍스트 스타일 속성들을 설정할 수 있습니다.
+            color: Colors.red,
           ),
         ),
-
       ),
       home: ChatScreen(),
     );
@@ -58,7 +64,9 @@ class ChatScreen extends StatefulWidget {
   @override
   _ChatScreenState createState() => _ChatScreenState();
 }
+
 final List<ChatMessage> messages = [];
+
 class _ChatScreenState extends State<ChatScreen> {
   final TextEditingController _textController = TextEditingController();
   bool _isLoading = false; // 로딩 상태 관리 변수
@@ -112,9 +120,9 @@ class _ChatScreenState extends State<ChatScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return CupertinoPageScaffold(
-      navigationBar: CupertinoNavigationBar(
-        backgroundColor: Colors.transparent,
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.white,
         leading: GestureDetector(
           onTap: () {
             Navigator.of(context).pushReplacement(
@@ -122,12 +130,12 @@ class _ChatScreenState extends State<ChatScreen> {
             // MaterialPageRoute(builder: (context) => UserInfoScreen()));
           },
           child: Icon(
-            CupertinoIcons.back,
+            Icons.arrow_back,
             color: myBlue,
           ),
         ),
       ),
-      child: SafeArea(
+      body: SafeArea(
         child: Column(
           children: <Widget>[
             Expanded(
@@ -153,49 +161,33 @@ class _ChatScreenState extends State<ChatScreen> {
                 child: Row(
                   children: <Widget>[
                     Expanded(
-                      child: CupertinoTextField(
-                        padding:
-                            EdgeInsets.symmetric(vertical: 2, horizontal: 10),
+                      child: TextField(
                         controller: _textController,
-                        placeholder: '질문을 입력하세요',
+                        decoration: InputDecoration(
+                          hintText: '질문을 입력하세요',
+                          border: InputBorder.none,
+                          contentPadding:
+                          EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                        ),
                         onSubmitted: _handleSubmitted,
                         keyboardType: TextInputType.text,
                         cursorColor: myBlue,
                         maxLines: 5,
                         minLines: 1,
                         style: TextStyle(fontFamily: 'MyKoreanFont', color: Colors.black),
-
-                        decoration: BoxDecoration(
-                          // 이 부분을 수정하여 테두리를 제거합니다.
-                          border: Border.all(
-                              style: BorderStyle.none), // 테두리 스타일을 none으로 설정
-                        ),
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.only(
-                        right: 2.5,
-                      ),
-                      child: SizedBox(
-                        width: 30,
-                        height: 30,
-                        child: CupertinoButton(
-                          padding: EdgeInsets.zero,
-                          onPressed: () {
-                            String text = _textController.text.trim();
-                            if (text.isNotEmpty) {
-                              _handleSubmitted(text);
-                            }
-                          },
-                          child: Container(
-                            decoration: BoxDecoration(
-                              image: DecorationImage(
-                                image: AssetImage('assets/images/Send.png'),
-                                fit: BoxFit.cover,
-                              ),
-                            ),
-                          ),
-                        ),
+                      padding: const EdgeInsets.only(right: 8.0),
+                      child: IconButton(
+                        icon: Icon(Icons.send),
+                        color: myBlue,
+                        onPressed: () {
+                          String text = _textController.text.trim();
+                          if (text.isNotEmpty) {
+                            _handleSubmitted(text);
+                          }
+                        },
                       ),
                     ),
                   ],
@@ -258,7 +250,7 @@ class ChatMessage extends StatelessWidget {
               ),
               decoration: BoxDecoration(
                 color: isSentByMe ? myBlue : Colors.grey[200],
-                borderRadius: BorderRadius.circular(12.0),
+                borderRadius: BorderRadius.circular(20),
               ),
               padding: EdgeInsets.all(12.0),
               child: Text(
@@ -277,31 +269,31 @@ class ChatMessage extends StatelessWidget {
           ],
         ),
         Padding(
-            padding: EdgeInsets.only(
-              top: 4.0,
-              right: isSentByMe ? 40 : 0,
-              left: isSentByMe ? 0 : 40,
-            ),
-            child: Align(
-              alignment: isSentByMe ? Alignment.topRight : Alignment.topLeft,
-              child: Padding(
-                padding: EdgeInsets.only(
-                  bottom: 5, // 여기를 조절하여 시간 텍스트와 말풍선의 간격을 줄입니다.
-                  right: isSentByMe ? 10 : 0,
-                  left: isSentByMe ? 0 : 10,
-                ),
-                child: Text(
-                  _getTime(),
-                  style: TextStyle(
-                    color: Colors.grey,
-                    fontSize: 12.0,
-                    fontFamily: 'MyKoreanFont'
-                  ),
+          padding: EdgeInsets.only(
+            top: 4.0,
+            right: isSentByMe ? 40 : 0,
+            left: isSentByMe ? 0 : 40,
+          ),
+          child: Align(
+            alignment: isSentByMe ? Alignment.topRight : Alignment.topLeft,
+            child: Padding(
+              padding: EdgeInsets.only(
+                bottom: 5, // 여기를 조절하여 시간 텍스트와 말풍선의 간격을 줄입니다.
+                right: isSentByMe ? 10 : 0,
+                left: isSentByMe ? 0 : 10,
+              ),
+              child: Text(
+                _getTime(),
+                style: TextStyle(
+                  color: Colors.grey,
+                  fontSize: 12.0,
+                  fontFamily: 'MyKoreanFont',
                 ),
               ),
-            )),
+            ),
+          ),
+        ),
       ],
     );
   }
 }
-
