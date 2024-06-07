@@ -3,6 +3,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter/widgets.dart';
 import 'main.dart';
 import 'package:geolocator/geolocator.dart';
 import 'signUp_service.dart';
@@ -172,8 +173,8 @@ class _SignUpScreenState extends State {
         textTheme: CupertinoTextThemeData(
             textStyle:
                 TextStyle(fontFamily: 'MyKoreanFont', color: Colors.black)));
-    return CupertinoPageScaffold(
-        navigationBar: CupertinoNavigationBar(
+    return Scaffold(
+        appBar: CupertinoNavigationBar(
           backgroundColor: Colors.transparent,
           leading: GestureDetector(
             onTap: () {
@@ -186,17 +187,17 @@ class _SignUpScreenState extends State {
             ),
           ),
         ),
-        child: SingleChildScrollView(
+        body: SingleChildScrollView(
           child: Column(
             children: [
               Padding(
-                padding: EdgeInsets.all(40),
+                padding: EdgeInsets.only(left: 40, right: 40, bottom: 40, top: 5),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: <Widget>[
-                    SizedBox(
-                      height: 50,
-                    ),
+                    // SizedBox(
+                    //   height: 50,
+                    // ),
                     Image.asset(
                       'assets/images/bittok_icon.png',
                       width: 100,
@@ -256,70 +257,85 @@ class _SignUpScreenState extends State {
                             ),
                             onPressed: () {
                               selectGender(Gender.male);
-                            }),
+                            }
+                            ),
                       ],
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    ),
-                    const SizedBox(height: 20),
-                    const Text(
-                      '추위를 느끼는 정도를 선택해주세요!',
-                      style: TextStyle(
-                          color: CupertinoColors.black,
-                          fontSize: 18,
-                          fontFamily: "MyKoreanFont"),
-                    ),
-                    const SizedBox(height: 20),
 
-                    Row(
-                      children: [
-                        CupertinoRadio<int>(
-                          value: 1, // 이 옵션의 값
-                          groupValue: radiobutton_hot, // 그룹 내 현재 선택된 값
-                          onChanged: (value) {
-                            setState(() {
-                              radiobutton_hot = value!; // 선택된 값
-                              myUser.hot_degree = radiobutton_hot;
-                              // print("update radiobutton $radiobutton_hot");
-                            });
-                          },
-                          activeColor: myBlue,
-                        ),
-                        Text(' 추위를 많이 타요.', style: TextStyle(color: Colors.black)),
-                      ],
                     ),
-                    Row(
-                      children: [
-                        CupertinoRadio<int>(
-                          value: 2, // 이 옵션의 값
-                          groupValue: radiobutton_hot, // 그룹 내 현재 선택된 값
-                          onChanged: (value) {
-                            setState(() {
-                              radiobutton_hot = value!; // 선택된 값 업데이트
-                              myUser.hot_degree = radiobutton_hot;
-                              // print("update radiobutton $radiobutton_hot");
-                            });
-                          },
-                          activeColor: myBlue,
-                        ),
-                        Text(' 평균이에요.', style: TextStyle(color: Colors.black),),
-                      ],
-                    ),
-                    Row(
-                      children: [
-                        CupertinoRadio<int>(
-                          value: 3, // 이 옵션의 값
-                          groupValue: radiobutton_hot, // 그룹 내 현재 선택된 값
-                          onChanged: (value) {
-                            setState(() {
-                              radiobutton_hot = value!; // 선택된 값 업데이트
-                              myUser.hot_degree = radiobutton_hot;
-                              // print("update radiobutton $radiobutton_hot");
-                            });
-                          },
-                          activeColor: myBlue,
-                        ),
-                        Text(' 더위를 많이 타요.', style: TextStyle(color: Colors.black),),
-                      ],
+                    SizedBox(
+                      // height: 40,
+                      width: 200,
+                      child:
+                          Column(
+                            children: [
+                              const SizedBox(height: 20),
+                              Row(
+                                children: [
+                                  const Text(
+                                    '추위를 느끼는 정도를 선택해주세요!',
+                                    style: TextStyle(
+                                        color: CupertinoColors.black,
+                                        fontSize: 18,
+                                        fontFamily: "MyKoreanFont"),
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(height: 20),
+
+                              Row(
+                                children: [
+                                  CupertinoRadio<int>(
+                                    value: 1, // 이 옵션의 값
+                                    groupValue: radiobutton_hot, // 그룹 내 현재 선택된 값
+                                    onChanged: (value) {
+                                      setState(() {
+                                        radiobutton_hot = value!; // 선택된 값
+                                        myUser.hot_degree = radiobutton_hot;
+                                        // print("update radiobutton $radiobutton_hot");
+                                      });
+                                    },
+                                    activeColor: myBlue,
+                                  ),
+                                  Text(' 추위를 많이 타요.', style: TextStyle(color: Colors.black)),
+                                ],
+                              ),
+                              Row(
+                                children: [
+                                  CupertinoRadio<int>(
+                                    value: 2, // 이 옵션의 값
+                                    groupValue: radiobutton_hot, // 그룹 내 현재 선택된 값
+                                    onChanged: (value) {
+                                      setState(() {
+                                        radiobutton_hot = value!; // 선택된 값 업데이트
+                                        myUser.hot_degree = radiobutton_hot;
+                                        // print("update radiobutton $radiobutton_hot");
+                                      });
+                                    },
+                                    activeColor: myBlue,
+                                  ),
+                                  Text(' 평균이에요.', style: TextStyle(color: Colors.black),),
+                                ],
+                              ),
+                              Row(
+                                children: [
+                                  CupertinoRadio<int>(
+                                    value: 3, // 이 옵션의 값
+                                    groupValue: radiobutton_hot, // 그룹 내 현재 선택된 값
+                                    onChanged: (value) {
+                                      setState(() {
+                                        radiobutton_hot = value!; // 선택된 값 업데이트
+                                        myUser.hot_degree = radiobutton_hot;
+                                        // print("update radiobutton $radiobutton_hot");
+                                      });
+                                    },
+                                    activeColor: myBlue,
+                                  ),
+                                  Text(' 더위를 많이 타요.', style: TextStyle(color: Colors.black),),
+                                ],
+                              ),
+                            ],
+                          )
                     ),
 
                     const SizedBox(height: 20),
