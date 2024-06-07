@@ -233,6 +233,7 @@ void main() {
 }
 
 void DivideWeatherData(List WeatherJsonList) {
+  hourWeathers = [];
   for (var item in WeatherJsonList) {
     if (item.containsKey('current_weather')) {
       var currentWeatherData = item['current_weather'];
@@ -332,6 +333,7 @@ class _MyWeatherAppState extends State<MyWeatherApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(fontFamily: 'MyKoreanFont'),
       // 앱을 머티리얼 디자인으로 구성
       home: Scaffold(

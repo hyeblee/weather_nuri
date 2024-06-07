@@ -42,6 +42,7 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
           fontFamily: 'MyKoreanFont',
           textSelectionTheme: TextSelectionThemeData(cursorColor: myBlue)),
@@ -98,6 +99,7 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
                 SizedBox(height: 20),
                 ElevatedButton(
                   onPressed: () {
+                    messages.clear();
                     // 로그아웃 동작
                     Navigator.push(
                       context,

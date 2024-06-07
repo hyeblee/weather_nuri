@@ -38,6 +38,7 @@ class _UserInfoEditScreenState extends State<UserInfoEditScreen> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(fontFamily: 'MyKoreanFont', textSelectionTheme: TextSelectionThemeData(cursorColor: myBlue)),
       home: Scaffold(
         body: SingleChildScrollView(

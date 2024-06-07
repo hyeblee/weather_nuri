@@ -24,18 +24,18 @@ Future<String> fetchGptResponse(String text) async {
       "hot": '1',
     }),
   );
+  var decodedBytes = utf8.decode(response.bodyBytes);
+  var data = json.decode(decodedBytes);
+
+  print(data);
   print(response.body);
 
   if (response.statusCode == 200) {
-    var data = json.decode(response.body);
-    print('$data');
-    var answer = data["answer"];
-    print(response);
-    return answer;
+    return data['answer'];
   } else {
-    print(response.body);
     throw Exception('Failed to load response');
   }
+
 }
 
 void main() {

@@ -284,7 +284,7 @@ class _SignUpScreenState extends State {
                           },
                           activeColor: myBlue,
                         ),
-                        Text(' 추위를 많이 타요.', style: TextStyle(color: Colors.black),),
+                        Text(' 추위를 많이 타요.', style: TextStyle(color: Colors.black)),
                       ],
                     ),
                     Row(
@@ -321,6 +321,7 @@ class _SignUpScreenState extends State {
                         Text(' 더위를 많이 타요.', style: TextStyle(color: Colors.black),),
                       ],
                     ),
+
                     const SizedBox(height: 20),
 
                     Row(

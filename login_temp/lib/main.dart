@@ -10,6 +10,8 @@ import 'sign_up.dart' as signUp;
 import 'package:login_temp/signUp_service.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
+
 
 signUp.User myUser = signUp.User();
 String UserID = '아이디';
@@ -65,8 +67,18 @@ const Color mySky = Color(0xFFABC3FF);
 Service myService = Service();
 
 
-void main() {
+Future main() async {
+  WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
+
+  await initialization();
+
   runApp(MyApp());
+}
+
+Future initialization() async{
+  await Future.delayed(const Duration(seconds: 3));
+  FlutterNativeSplash.remove();
 }
 
 class MyApp extends StatelessWidget {
@@ -75,6 +87,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CupertinoApp(
+      debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: CupertinoThemeData(
         textTheme: CupertinoTextThemeData(textStyle: TextStyle(fontFamily: 'MyKoreanFont'))
@@ -104,6 +117,7 @@ class _MyLoginPageState extends State<MyLoginPage> {
   @override
   void initState() {
     super.initState();
+    // messages = [];
     getLocation(myUser);
     //주석 해제해야함!!!
     print('InitState: Login Page initialized');
@@ -142,9 +156,9 @@ class _MyLoginPageState extends State<MyLoginPage> {
   }
 
   void _signup() {
-    Navigator.pushReplacement(
+    Navigator.pushAndRemoveUntil(
       context,
-      MaterialPageRoute(builder: (context) => SignUpScreen()),
+      MaterialPageRoute(builder: (context) => SignUpScreen()),(route)=>false,
     );
   }
 

@@ -1,5 +1,21 @@
 [
     {
+        "merged": "com.example.login_temp.app-merged_res-16:/drawable_splashscreen.png.flat",
+        "source": "com.example.login_temp.app-main-10:/drawable/splashscreen.png"
+    },
+    {
+        "merged": "com.example.login_temp.app-merged_res-16:/drawable_launch_background.xml.flat",
+        "source": "com.example.login_temp.app-main-10:/drawable/launch_background.xml"
+    },
+    {
+        "merged": "com.example.login_temp.app-merged_res-16:/drawable_background.png.flat",
+        "source": "com.example.login_temp.app-main-10:/drawable/background.png"
+    },
+    {
+        "merged": "com.example.login_temp.app-merged_res-16:/drawable-v21_background.png.flat",
+        "source": "com.example.login_temp.app-main-10:/drawable-v21/background.png"
+    },
+    {
         "merged": "com.example.login_temp.app-merged_res-16:/mipmap-xhdpi_ic_launcher.png.flat",
         "source": "com.example.login_temp.app-main-10:/mipmap-xhdpi/ic_launcher.png"
     },
@@ -16,12 +32,16 @@
         "source": "com.example.login_temp.app-main-10:/mipmap-xxhdpi/ic_launcher.png"
     },
     {
+        "merged": "com.example.login_temp.app-merged_res-16:/drawable-night_launch_background.xml.flat",
+        "source": "com.example.login_temp.app-main-10:/drawable-night/launch_background.xml"
+    },
+    {
         "merged": "com.example.login_temp.app-merged_res-16:/mipmap-mdpi_ic_launcher.png.flat",
         "source": "com.example.login_temp.app-main-10:/mipmap-mdpi/ic_launcher.png"
     },
     {
-        "merged": "com.example.login_temp.app-merged_res-16:/drawable_launch_background.xml.flat",
-        "source": "com.example.login_temp.app-main-10:/drawable/launch_background.xml"
+        "merged": "com.example.login_temp.app-merged_res-16:/drawable-night-v21_launch_background.xml.flat",
+        "source": "com.example.login_temp.app-main-10:/drawable-night-v21/launch_background.xml"
     },
     {
         "merged": "com.example.login_temp.app-merged_res-16:/mipmap-xxxhdpi_ic_launcher.png.flat",

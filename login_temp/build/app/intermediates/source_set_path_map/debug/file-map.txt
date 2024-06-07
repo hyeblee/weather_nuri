@@ -15,7 +15,8 @@ com.example.login_temp.app-rs-13 C:\Users\qls09\git\capstone3\login_temp\build\a
 com.example.login_temp.app-mergeDebugResources-14 C:\Users\qls09\git\capstone3\login_temp\build\app\intermediates\incremental\debug\mergeDebugResources\merged.dir
 com.example.login_temp.app-mergeDebugResources-15 C:\Users\qls09\git\capstone3\login_temp\build\app\intermediates\incremental\debug\mergeDebugResources\stripped.dir
 com.example.login_temp.app-merged_res-16 C:\Users\qls09\git\capstone3\login_temp\build\app\intermediates\merged_res\debug
-com.example.login_temp.app-packaged_res-17 C:\Users\qls09\git\capstone3\login_temp\build\flutter_plugin_android_lifecycle\intermediates\packaged_res\debug
-com.example.login_temp.app-packaged_res-18 C:\Users\qls09\git\capstone3\login_temp\build\geolocator_android\intermediates\packaged_res\debug
-com.example.login_temp.app-packaged_res-19 C:\Users\qls09\git\capstone3\login_temp\build\google_maps_flutter_android\intermediates\packaged_res\debug
-com.example.login_temp.app-packaged_res-20 C:\Users\qls09\git\capstone3\login_temp\build\permission_handler_android\intermediates\packaged_res\debug
+com.example.login_temp.app-packaged_res-17 C:\Users\qls09\git\capstone3\login_temp\build\flutter_native_splash\intermediates\packaged_res\debug
+com.example.login_temp.app-packaged_res-18 C:\Users\qls09\git\capstone3\login_temp\build\flutter_plugin_android_lifecycle\intermediates\packaged_res\debug
+com.example.login_temp.app-packaged_res-19 C:\Users\qls09\git\capstone3\login_temp\build\geolocator_android\intermediates\packaged_res\debug
+com.example.login_temp.app-packaged_res-20 C:\Users\qls09\git\capstone3\login_temp\build\google_maps_flutter_android\intermediates\packaged_res\debug
+com.example.login_temp.app-packaged_res-21 C:\Users\qls09\git\capstone3\login_temp\build\permission_handler_android\intermediates\packaged_res\debug
