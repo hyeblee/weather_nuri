@@ -46,7 +46,8 @@ def receive_floats():
     if latitude is None or longitude is None:
         return jsonify({'error': 'Invalid input'}), 400
 
-    fetch_weather_data(latitude, longitude)
+    # 1초 후에 작업 실행
+    threading.Timer(1, fetch_weather_data, args=(latitude, longitude)).start()
     return jsonify({'latitude': latitude, 'longitude': longitude}), 200
 
 # 위경도->주소 변환
