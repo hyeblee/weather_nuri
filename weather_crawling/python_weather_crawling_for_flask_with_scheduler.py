@@ -29,8 +29,7 @@ import pandas as pd
 from datetime import datetime
 import re
 from pytz import timezone
-import schedule
-import threading
+import logging
 
 app = Flask(__name__)
 
@@ -166,8 +165,6 @@ def get_weather_temperatures(region):
         driver.quit()
         return None
 
-
-
 # 기상청 & openweatherapi 크롤링 & 디비 적재 함수
 def fetch_weather_data(latitude, longitude):
     global data_list
@@ -301,6 +298,10 @@ def parse_day_data(day):
 def get_weather_data():
     return jsonify(data_list)
 
+@app.route('/trigger_schedule', methods=['POST'])
+def trigger_schedule():
+    schedule.run_pending()
+    return jsonify({'status': 'Schedule triggered'}), 200
 
 if __name__ == '__main__':
     if latitude is not None and longitude is not None:
@@ -309,7 +310,12 @@ if __name__ == '__main__':
     schedule.every().hour.at(":00").do(fetch_weather_data, latitude, longitude)
 
     # 스케줄러를 별도의 스레드에서 실행
-    scheduler_thread = threading.Thread(target=schedule.run_all, daemon=True)
+    def run_scheduler():
+        while True:
+            schedule.run_pending()
+            time.sleep(1)
+
+    scheduler_thread = threading.Thread(target=run_scheduler, daemon=True)
     scheduler_thread.start()
 
     # Flask 애플리케이션 실행
