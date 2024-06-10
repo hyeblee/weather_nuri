@@ -142,6 +142,8 @@ class _MyLoginPageState extends State<MyLoginPage> {
     print("ee");
 
     if(LoginResponse == 'success'){
+
+      nickname = usernameController.text.toString();
     // if(_usernameController.text == 'bittok' && _passwordController.text == '0000') {
       print('Attempting to log in with username ${usernameController.text} and password ${_passwordController.text}');
       print('Login success!');

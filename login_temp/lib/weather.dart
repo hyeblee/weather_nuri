@@ -16,9 +16,6 @@ String googleAPIKey = APIKeys.googleAPIKey;
 late WeatherData currentWeather;
 late String cityDong;
 
-
-
-
 Future<void> PostLocation(double latitude, double longitude) async {
   print('start');
 
@@ -26,7 +23,8 @@ Future<void> PostLocation(double latitude, double longitude) async {
   final response = await http.post(
     url,
     headers: {'Content-Type': 'application/json'},
-    body: jsonEncode({'latitude': myUser.latitude, 'longitude': myUser.longitude}),
+    body: jsonEncode(
+        {'latitude': myUser.latitude, 'longitude': myUser.longitude}),
   );
 
   if (response.statusCode == 200) {
@@ -37,12 +35,7 @@ Future<void> PostLocation(double latitude, double longitude) async {
   }
 
   print('end');
-
 }
-
-
-
-
 
 class HourWeatherWidget extends StatelessWidget {
   final String hour;
@@ -53,7 +46,6 @@ class HourWeatherWidget extends StatelessWidget {
     required this.hour,
     required this.weatherImage,
     required this.degree,
-
   });
 
   @override
@@ -87,10 +79,13 @@ class HourWeatherWidget extends StatelessWidget {
                     ),
                   ),
                 ),
-
-                SizedBox(height: 1,
+                SizedBox(
+                  height: 1,
                   width: 65,
-                  child: Divider(thickness: 2, color: mySky,),
+                  child: Divider(
+                    thickness: 2,
+                    color: mySky,
+                  ),
                 ),
                 SizedBox(height: 5),
                 Image.asset(
@@ -111,7 +106,6 @@ class HourWeatherWidget extends StatelessWidget {
             ),
           ),
         ),
-
       ],
     );
   }
@@ -137,7 +131,6 @@ class CurrentWeatherWidget extends StatelessWidget {
     return Column(
       children: [
         Container(
-
           child: Padding(
             padding: EdgeInsets.only(), // 내부 여백 추가
             child: Column(
@@ -158,10 +151,11 @@ class CurrentWeatherWidget extends StatelessWidget {
                     color: myBlue,
                   ),
                 ),
-
                 Row(
                   children: [
-                    SizedBox(width: 150,),
+                    SizedBox(
+                      width: 150,
+                    ),
                     Text(
                       // " 13°",
                       currentWeather.maxDegree,
@@ -185,13 +179,11 @@ class CurrentWeatherWidget extends StatelessWidget {
                       ),
                     ),
                   ],
-
                 ),
               ],
             ),
           ),
         ),
-
       ],
     );
   }
@@ -205,7 +197,6 @@ class WeatherData {
   final String maxDegree;
   final String minDegree;
 
-
   WeatherData({
     required this.hour,
     required this.image,
@@ -215,15 +206,11 @@ class WeatherData {
     required this.minDegree,
   });
 
-
-
-
   @override
   String toString() {
     return 'WeatherData(hour: $hour, image: $image, degree: $degree, currentDegree: $currentDegree, maxDegree: $maxDegree, minDegree: $minDegree)';
   }
 }
-
 
 // WeatherData currentWeather = WeatherData(hour: '', image: '', degree: '');
 List<WeatherData> hourWeathers = [];
@@ -232,7 +219,7 @@ void main() {
   runApp(MyWeatherApp()); // MyWeatherApp 위젯을 루트로 하는 앱 실행
 }
 
-void DivideWeatherData(List WeatherJsonList) {
+void DivideWeatherData(List WeatherJsonList) {//currentweather 채우는 함수
   hourWeathers = [];
   for (var item in WeatherJsonList) {
     if (item.containsKey('current_weather')) {
@@ -243,15 +230,17 @@ void DivideWeatherData(List WeatherJsonList) {
           currentDegree: currentWeatherData['현재기온'],
           maxDegree: currentWeatherData['최고기온'],
           minDegree: currentWeatherData['최저기온'],
-          degree: ' '
-      );
+          degree: ' ');
       print('current = ${currentWeather.degree}');
     } else {
       hourWeathers.add(
         WeatherData(
           hour: item['hour'],
           image: item['image'],
-          degree: item['degree'], currentDegree: '', maxDegree: '', minDegree: '',
+          degree: item['degree'],
+          currentDegree: '',
+          maxDegree: '',
+          minDegree: '',
         ),
       );
     }
@@ -272,15 +261,23 @@ class MyWeatherApp extends StatefulWidget {
 class _MyWeatherAppState extends State<MyWeatherApp> {
   List<Map<String, dynamic>> dataList = []; // 날씨 데이터를 저장할 리스트
 
+  @override
   void initState() {
+    initialize();
+    // currentWeather = CurrentWeatherWidget(hour: '13:00', weatherImage: 'sun', degree: '27℃', maxDegree: '27.3℃', minDegree: '27.3℃') as WeatherData;
+    super.initState();
+  }
+
+  Future<void> initialize() async {
     // print(getAddress());
     print("1");
     // PostLocation(1, 1);
     print("2");
-    getWeathers();
+    await getWeathers();
     print("3");
-    super.initState();
+    await Future.delayed(Duration(seconds: 3));
   }
+
   Future<void> UpdateLocation(double latitude, double longitude) async {
     print('start');
 
@@ -288,7 +285,8 @@ class _MyWeatherAppState extends State<MyWeatherApp> {
     final response = await http.post(
       url,
       headers: {'Content-Type': 'application/json'},
-      body: jsonEncode({'latitude': 35.80158130754591, 'longitude': 127.13021491497486}),
+      body: jsonEncode(
+          {'latitude': 35.80158130754591, 'longitude': 127.13021491497486}),
     );
 
     if (response.statusCode == 200) {
@@ -299,7 +297,6 @@ class _MyWeatherAppState extends State<MyWeatherApp> {
     }
 
     print('end');
-
   }
 
   Future<void> getWeathers() async {
@@ -328,8 +325,6 @@ class _MyWeatherAppState extends State<MyWeatherApp> {
     }
   }
 
-
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -343,7 +338,8 @@ class _MyWeatherAppState extends State<MyWeatherApp> {
           child: SizedBox(
             // 바디 중앙 정렬
             child: Container(
-              child: Column(
+              child: SingleChildScrollView(
+                child: Column(
                 // 세로 방향으로 위젯을 배치하는 컬럼
                 mainAxisAlignment: MainAxisAlignment.start,
                 // 메인 축(수직축)을 중앙으로 정렬
@@ -370,63 +366,64 @@ class _MyWeatherAppState extends State<MyWeatherApp> {
                   ),
                   SizedBox(height: 40),
 
-                  Padding(padding: EdgeInsets.all(3),
+                  Padding(
+                    padding: EdgeInsets.all(3),
                     child: CurrentWeatherWidget(
-                      hour: currentWeather.hour, degree: currentWeather.currentDegree, weatherImage: currentWeather.image,
-                      maxDegree: currentWeather.maxDegree, minDegree: currentWeather.minDegree,
+                      hour: currentWeather.hour,
+                      degree: currentWeather.currentDegree,
+                      weatherImage: currentWeather.image,
+                      maxDegree: currentWeather.maxDegree,
+                      minDegree: currentWeather.minDegree,
                     ),
-
                   ),
 
-                  SizedBox( height : 60),
+                  SizedBox(height: 60),
 
                   SizedBox(
                     height: 130,
                     child: hourWeathers.isNotEmpty
                         ? ListView.builder(
-                      scrollDirection: Axis.horizontal,
-                      itemCount: hourWeathers.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        return HourWeatherWidget(
-                          hour: hourWeathers[index].hour,
-                          weatherImage: hourWeathers[index].image,
-                          degree: hourWeathers[index].degree,
-                        );
-                      },
-                    )
+                            scrollDirection: Axis.horizontal,
+                            itemCount: hourWeathers.length,
+                            itemBuilder: (BuildContext context, int index) {
+                              return HourWeatherWidget(
+                                hour: hourWeathers[index].hour,
+                                weatherImage: hourWeathers[index].image,
+                                degree: hourWeathers[index].degree,
+                              );
+                            },
+                          )
                         : Text(
-                      '날씨 데이터를 불러올 수 없습니다.',
-                      style: TextStyle(color: myBlue, fontSize: 20),
-                    ),
-
+                            '날씨 데이터를 불러오는 중입니다. . .',
+                            style: TextStyle(color: myBlue, fontSize: 20),
+                          ),
                   ),
-
                 ],
+              ),
               ),
             ),
           ),
         ),
-        bottomNavigationBar: MyBottomNavigator(currentIndex: 0,onTap: (currentIndex) {
-          if (currentIndex == 0) {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => MyWeatherApp()),
-            );
-          } else if (currentIndex == 1) {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => ChatScreen()),
-            );
-          } else if (currentIndex == 2) {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => UserInfoScreen()),
-            );
-          }
-        }
-
-
-        ),
+        bottomNavigationBar: MyBottomNavigator(
+            currentIndex: 0,
+            onTap: (currentIndex) {
+              if (currentIndex == 0) {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => MyWeatherApp()),
+                );
+              } else if (currentIndex == 1) {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => ChatScreen()),
+                );
+              } else if (currentIndex == 2) {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => UserInfoScreen()),
+                );
+              }
+            }),
       ),
     );
   }
