@@ -125,8 +125,10 @@ class _ChatScreenState extends State<ChatScreen> {
         backgroundColor: Colors.white,
         leading: GestureDetector(
           onTap: () {
+            messages.clear;
             Navigator.of(context).pushReplacement(
                 MaterialPageRoute(builder: (context) => MyWeatherApp()));
+
             // MaterialPageRoute(builder: (context) => UserInfoScreen()));
           },
           child: Icon(

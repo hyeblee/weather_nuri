@@ -78,6 +78,7 @@ class _UserInfoEditScreenState extends State<UserInfoEditScreen> {
                 onPressed: () {
                   setState(() {
                     nickname = nameController.text;
+                    print("edit nickname = $nickname");
                   });
                   // 수정된 정보를 서버에 전송하거나 로컬에 저장할 수 있습니다.
                   Navigator.pushReplacement(

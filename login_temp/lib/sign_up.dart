@@ -106,11 +106,10 @@ String setUser(User user) {
   user.password = _passwordController.text;
 
   if (user.gender == Gender.none) return 'gender';
-
+  if (radiobutton_hot == 0) return 'hot';
   if (user.agree == false) return 'location';
   getLocation(user);
   print("hotdegree = ${user.hot_degree}");
-  if (radiobutton_hot == 0) return 'hot';
   user.hot_degree = radiobutton_hot;
 
   return 'success';
@@ -132,8 +131,11 @@ class _SignUpScreenState extends State {
     print('location = ${myUser.agree}');
     String result = setUser(myUser);
     if (result == 'success') {
+      String gender = myUser.gender.toString();
+      gender = gender.substring(gender.indexOf('.') + 1);
+      print("성별은 = $gender");
       service.signUpMember(myUser.name, myUser.userID, myUser.password,
-          myUser.gender.toString(), myUser.hot_degree.toString());
+          gender, myUser.hot_degree.toString(), myUser.latitude.toDouble(), myUser.longitude.toDouble());
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => MyLoginPage()),
@@ -165,6 +167,10 @@ class _SignUpScreenState extends State {
     _nameController = TextEditingController();
     _userIDController = TextEditingController();
     _passwordController = TextEditingController();
+    myUser.gender = Gender.none;
+    myUser.agree = false;
+    radiobutton_hot = 0;
+
   }
 
   Widget build(BuildContext context) {

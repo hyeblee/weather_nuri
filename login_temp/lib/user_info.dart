@@ -33,10 +33,11 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
 
   @override
   void initState() {
-    nickname = UserID;
+
+    print('USerID=$nickname');
     super.initState();
     // _user = User(name: '비똑이', email: 'john@example.com', age: 30);
-    // nameController = TextEditingController(text: _user.name);
+    nameController = TextEditingController(text: nickname);
   }
 
   @override

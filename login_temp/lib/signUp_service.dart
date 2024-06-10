@@ -22,7 +22,7 @@ class Service {
   }
 
   Future<http.Response> signUpMember(
-      String membername, String memberemail, String memberpassword, String gender, String hot) async {
+      String membername, String memberemail, String memberpassword, String gender, String hot, double latitude, double longitude) async {
     var uri = Uri.parse("http://34.64.61.102:8080/member/save");
     Map<String, String> headers = {"Content-Type": "application/json"};
 
@@ -31,6 +31,8 @@ class Service {
       'memberPassword' : '$memberpassword',
       'memberName' : '$membername',
       'gender' : '$gender',
+      'latitude' : '$latitude',
+      'longitude' : '$longitude',
       'hot' : '$hot',
     };
     var body = json.encode(data);

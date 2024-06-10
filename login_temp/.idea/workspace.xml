@@ -27,7 +27,12 @@
       <change beforePath="$PROJECT_DIR$/build/app/outputs/flutter-apk/app-debug.apk" beforeDir="false" afterPath="$PROJECT_DIR$/build/app/outputs/flutter-apk/app-debug.apk" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build/app/outputs/flutter-apk/app-debug.apk.sha1" beforeDir="false" afterPath="$PROJECT_DIR$/build/app/outputs/flutter-apk/app-debug.apk.sha1" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build/cbff2b1535276d602df97b9656722b6e.cache.dill.track.dill" beforeDir="false" afterPath="$PROJECT_DIR$/build/cbff2b1535276d602df97b9656722b6e.cache.dill.track.dill" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/chatting.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/chatting.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/main.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/main.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/signUp_service.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/signUp_service.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/sign_up.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/sign_up.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/user_info.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/user_info.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/user_info_edit.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/user_info_edit.dart" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

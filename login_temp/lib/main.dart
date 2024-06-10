@@ -110,7 +110,7 @@ class MyLoginPage extends StatefulWidget {
 }
 
 class _MyLoginPageState extends State<MyLoginPage> {
-  final TextEditingController _usernameController = TextEditingController();
+  final TextEditingController usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
 
@@ -119,6 +119,7 @@ class _MyLoginPageState extends State<MyLoginPage> {
     super.initState();
     // messages = [];
     getLocation(myUser);
+    nickname = UserID;
     //주석 해제해야함!!!
     print('InitState: Login Page initialized');
   }
@@ -127,7 +128,7 @@ class _MyLoginPageState extends State<MyLoginPage> {
   void _login() async {
     print("login start");
     Service myService = Service();
-    String LoginResponse = await myService.loginMember(_usernameController.text.toString(), _passwordController.text.toString());
+    String LoginResponse = await myService.loginMember(usernameController.text.toString(), _passwordController.text.toString());
     print("${LoginResponse},,");
 
     //우선 임시로 추가해놓은 부분 삭제할 것
@@ -142,9 +143,9 @@ class _MyLoginPageState extends State<MyLoginPage> {
 
     if(LoginResponse == 'success'){
     // if(_usernameController.text == 'bittok' && _passwordController.text == '0000') {
-      print('Attempting to log in with username ${_usernameController.text} and password ${_passwordController.text}');
+      print('Attempting to log in with username ${usernameController.text} and password ${_passwordController.text}');
       print('Login success!');
-      UserID = _usernameController.text.toString();
+      UserID = usernameController.text.toString();
       print('id = $UserID');
       await postLocation(myUser.latitude, myUser.longitude);
       await getAddress();
@@ -214,7 +215,7 @@ class _MyLoginPageState extends State<MyLoginPage> {
                 child: Column(
                   children: [
                     SizedBox(height: 40),
-                    _buildTextField(controller: _usernameController, placeholder: '아이디'),
+                    _buildTextField(controller: usernameController, placeholder: '아이디'),
                     SizedBox(height: 30),
                     _buildTextField(controller: _passwordController, placeholder: '비밀번호', obscureText: true),
                     SizedBox(height: 80),
@@ -234,7 +235,7 @@ class _MyLoginPageState extends State<MyLoginPage> {
 
   @override
   void dispose() {
-    _usernameController.dispose();
+    usernameController.dispose();
     _passwordController.dispose();
     super.dispose();
   }
