@@ -51,7 +51,7 @@ def receive_floats():
     return jsonify({'latitude': latitude, 'longitude': longitude}), 200
 
 # 위경도->주소 변환
-GM_API_KEY = 'AIzaSyDzOorDUFYUi11kpVyUEl56a9s11gxmAIE' #googlemap api
+GM_API_KEY = '' #googlemap api
 
 data_list = []
 
