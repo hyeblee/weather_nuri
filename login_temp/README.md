@@ -1,16 +1,10 @@
-# login_temp
+# 비똑
 
-A new Flutter project.
+날씨와 관련된 범용적 대화가 가능한 챗봇 앱
 
-## Getting Started
 
-This project is a starting point for a Flutter application.
+## 주요 기능
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+사용자의 위치에 맞는 날씨에 기반하여 어울리는 옷과 음식 추천
+실시간 날씨 표시
+로그인 시, 사용자의 정보 함께 입력받아 맞춤화된 답변 제공
